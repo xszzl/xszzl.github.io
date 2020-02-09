@@ -3,7 +3,9 @@
   <entry>
     <title>IO多路复用</title>
     <url>/2020/02/09/IO%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/</url>
-    <content><![CDATA[<h2 id="IO多路复用"><a href="#IO多路复用" class="headerlink" title="IO多路复用"></a>IO多路复用</h2><h3 id="select"><a href="#select" class="headerlink" title="select"></a>select</h3><p><img src="/images/select%E8%AE%B2%E8%A7%A3.png" alt="select讲解"></p>
+    <content><![CDATA[<h2 id="IO多路复用"><a href="#IO多路复用" class="headerlink" title="IO多路复用"></a>IO多路复用</h2><h3 id="select"><a href="#select" class="headerlink" title="select"></a>select</h3><a id="more"></a>
+
+<p><img src="/images/select%E8%AE%B2%E8%A7%A3.png" alt="select讲解"></p>
 <p>虚线上半部分是在监听socket服务端，准备5个文件描述符用作通道，其中max标识的是文件描述符中编号最大的编号。然后再设置rset，rset是一个bitmap，我们将使用了的文件描述符的编号位置置为1，比如使用了1，2，5，7，9文件描述符，那么rset就是01100101010000…，默认为1024位。我们使用rset来代替fds数组</p>
 <p>然后就是select函数，该函数是一个阻塞函数，其参数分别是最大文件描述符编号+1，读文件描述符集合，写文件描述符集合，异常文件描述符集合和超时时间。其作用是将rset的内容从<strong>用户态拷贝到内核态</strong>，内核来负责每一个文件描述符是否有数据，如果没有就阻塞，如果有就将对应的rset位置位，然后select返回。</p>
 <p>在接下来的for循环里，就是读取有数据的fd，然后进行处理。</p>
