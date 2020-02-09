@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="elasticsearch," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="XiaoShanUzi" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="elasticsearch安装好elasticsearch之后，我们可以通过postman访问9200端口查看一些信息，下面给出一些基本的命令">
+<meta property="og:type" content="article">
+<meta property="og:title" content="总结-9-Elasticsearch之帖子搜索">
+<meta property="og:url" content="http://yoursite.com/2020/01/30/%E6%80%BB%E7%BB%93-9-Elasticsearch%E4%B9%8B%E5%B8%96%E5%AD%90%E6%90%9C%E7%B4%A2/index.html">
+<meta property="og:site_name" content="XiaoShanUzi">
+<meta property="og:description" content="elasticsearch安装好elasticsearch之后，我们可以通过postman访问9200端口查看一些信息，下面给出一些基本的命令">
+<meta property="article:published_time" content="2020-01-30T09:28:54.000Z">
+<meta property="article:modified_time" content="2020-01-30T10:37:21.216Z">
+<meta property="article:author" content="XiaoShanUzi">
+<meta property="article:tag" content="elasticsearch">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/01/30/总结-9-Elasticsearch之帖子搜索/"/>
+
+
+
+
+
+  <title>总结-9-Elasticsearch之帖子搜索 | XiaoShanUzi</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	
+	<a href="https://github.com/xszzl/" target="_blank" rel="noopener" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+	
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">XiaoShanUzi</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">to be a coder</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/30/%E6%80%BB%E7%BB%93-9-Elasticsearch%E4%B9%8B%E5%B8%96%E5%AD%90%E6%90%9C%E7%B4%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="XiaoShanUzi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="XiaoShanUzi">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">总结-9-Elasticsearch之帖子搜索</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-30T17:28:54+08:00">
+                2020-01-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%89%9B%E5%AE%A2%E7%A4%BE%E5%8C%BA%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/" itemprop="url" rel="index">
+                    <span itemprop="name">牛客社区项目总结</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/01/30/%E6%80%BB%E7%BB%93-9-Elasticsearch%E4%B9%8B%E5%B8%96%E5%AD%90%E6%90%9C%E7%B4%A2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/01/30/%E6%80%BB%E7%BB%93-9-Elasticsearch%E4%B9%8B%E5%B8%96%E5%AD%90%E6%90%9C%E7%B4%A2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+ 	     <span class="post-meta-divider">|</span>
+	     <span id="busuanzi_value_page_pv"></span>次阅读
+	  
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="elasticsearch"><a href="#elasticsearch" class="headerlink" title="elasticsearch"></a>elasticsearch</h1><p>安装好elasticsearch之后，我们可以通过postman访问9200端口查看一些信息，下面给出一些基本的命令</p>
+<a id="more"></a>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 查看节点状态</span></span><br><span class="line">localhost:<span class="number">9200</span>/_cat/indices?v</span><br><span class="line"><span class="comment">// 向test索引中加入id为3的数据，在body中设置json格式数据</span></span><br><span class="line">localhost:<span class="number">9200</span>/test/_doc/<span class="number">3</span></span><br><span class="line"><span class="comment">// 删除test索引中id为1的数据</span></span><br><span class="line">localhost:<span class="number">9200</span>/test/_doc/<span class="number">1</span></span><br><span class="line"><span class="comment">// 在body中实现多条件查询</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="string">"query"</span>:&#123;</span><br><span class="line">		<span class="string">"multi_match"</span>:&#123;</span><br><span class="line">			<span class="string">"query"</span>:<span class="string">"互联网"</span>,</span><br><span class="line">			<span class="string">"fields"</span>:[<span class="string">"title"</span>,<span class="string">"content"</span>]</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>首先我们在pom.xml中引入相关依赖，但是每次引入都会报错，经过多次查询资料，发现是SSL证书的问题，具体可以参考<a href="https://www.cnblogs.com/wpbxin/p/11746229.html" target="_blank" rel="noopener">博客</a></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-elasticsearch --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-data-elasticsearch<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>然后我们需要在application.properties中配置节点名称和路径，在SpringBoot中我们使用的是9300端口</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ElasticSearchProperties</span></span><br><span class="line"><span class="meta">spring.data.elasticsearch.cluster-name</span>=<span class="string">nowcoder</span></span><br><span class="line"><span class="meta">spring.data.elasticsearch.cluster-nodes</span>=<span class="string">127.0.0.1:9300</span></span><br></pre></td></tr></table></figure>
+<p>这里要注意，elasticsearch和redis的网络部分都是基于netty实现的，因此我们要做一些配置避免发送冲突，具体就是在App启动的地方做一个配置（具体需要百度下。。。）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在构造器之前</span></span><br><span class="line"><span class="meta">@PostConstruct</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="comment">// 解决netty启动冲突问题</span></span><br><span class="line">	<span class="comment">// Netty4Utils.setAvailableProcessors()</span></span><br><span class="line">	System.setProperty(<span class="string">"es.set.netty.runtime.available.processors"</span>,<span class="string">"false"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="entity"><a href="#entity" class="headerlink" title="entity"></a>entity</h2><p>在Springboot中我们使用elasticsearch，实现要对能搜索的实体进行配置，使用@Document将实体和索引（也就是数据库中的表）相联系，使用@Id设置索引中哪个字段为id，@Field来设置索引中的字段。</p>
+<p>@Document中indexName表示索引名字，type表示分隔符，shards表示分片，replicas表示副本数量。</p>
+<p>@Field中type表示数据类型，analyzer表示解析器，ik_max_word表示将一句话拆分成尽可能多的词语，ik_smart表示符合尝试的解析器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Document</span>(indexName = <span class="string">"discusspost"</span>,type = <span class="string">"_doc"</span>,shards = <span class="number">6</span>, replicas = <span class="number">3</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DiscussPost</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> id;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Field</span>(type = FieldType.Integer)</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> userId;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// analyzer 解析器 对一句话尽可能拆分成多个词条 聪明的拆分。。</span></span><br><span class="line">    <span class="meta">@Field</span>(type = FieldType.Text, analyzer = <span class="string">"ik_max_word"</span>, searchAnalyzer = <span class="string">"ik_smart"</span>)</span><br><span class="line">    <span class="keyword">private</span> String title;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Field</span>(type = FieldType.Text, analyzer = <span class="string">"ik_max_word"</span>, searchAnalyzer = <span class="string">"ik_smart"</span>)</span><br><span class="line">    <span class="keyword">private</span> String content;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Field</span>(type = FieldType.Integer)</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> type;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Field</span>(type = FieldType.Integer)</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> status;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Field</span>(type = FieldType.Date)</span><br><span class="line">    <span class="keyword">private</span> Date createTime;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Field</span>(type = FieldType.Integer)</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> commentCount;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Field</span>(type = FieldType.Double)</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">double</span> score;</span><br></pre></td></tr></table></figure>
+<h2 id="dao"><a href="#dao" class="headerlink" title="dao"></a>dao</h2><p>有了对实体中字段的注解，在dao层我们只要继承ElasticsearchRepository，并指明实体类型和ID类型即可</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">DiscussPostRepository</span> <span class="keyword">extends</span> <span class="title">ElasticsearchRepository</span>&lt;<span class="title">DiscussPost</span>, <span class="title">Integer</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="service"><a href="#service" class="headerlink" title="service"></a>service</h2><p>在service层，我们主要实现三个方法，分别是保存数据、删除数据和查询数据，其中保存和删除我们直接使用dao层的Repository即可，调用save和deleteById</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">saveDiscussPost</span><span class="params">(DiscussPost post)</span></span>&#123;</span><br><span class="line">    discussPostRepository.save(post);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deleteDiscussPost</span><span class="params">(<span class="keyword">int</span> id)</span></span>&#123;</span><br><span class="line">    discussPostRepository.deleteById(id);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>而搜索相对复杂一点。首先，我们要传入关键字、当前页和限制条数来构造搜索条件。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">SearchQuery searchQuery = <span class="keyword">new</span> NativeSearchQueryBuilder()</span><br><span class="line">        <span class="comment">// 构造多字段查询</span></span><br><span class="line">        .withQuery(QueryBuilders.multiMatchQuery(keyword,<span class="string">"title"</span>,<span class="string">"content"</span>))</span><br><span class="line">        <span class="comment">// 设置排序字段为type,score,createTime 倒序</span></span><br><span class="line">        .withSort(SortBuilders.fieldSort(<span class="string">"type"</span>).order(SortOrder.DESC))</span><br><span class="line">        .withSort(SortBuilders.fieldSort(<span class="string">"score"</span>).order(SortOrder.DESC))</span><br><span class="line">        .withSort(SortBuilders.fieldSort(<span class="string">"createTime"</span>).order(SortOrder.DESC))</span><br><span class="line">        <span class="comment">// 设置分页 page表示当前页</span></span><br><span class="line">        .withPageable(PageRequest.of(current,limit))</span><br><span class="line">        <span class="comment">// 设置高亮的前标签和后标签</span></span><br><span class="line">        .withHighlightFields(</span><br><span class="line">                <span class="keyword">new</span> HighlightBuilder.Field(<span class="string">"title"</span>).preTags(<span class="string">"&lt;em&gt;"</span>).postTags(<span class="string">"&lt;/em&gt;"</span>),</span><br><span class="line">                <span class="keyword">new</span> HighlightBuilder.Field(<span class="string">"content"</span>).preTags(<span class="string">"&lt;em&gt;"</span>).postTags(<span class="string">"&lt;/em&gt;"</span>)</span><br><span class="line">        ).build();</span><br></pre></td></tr></table></figure>
+<p>有了搜索条件之后，我们就需要使用elasticsearchTemplate进行搜索了，通过使用queryForPage方法，queryForPage方法的返回类型是org.springframework.data.domain.Page&lt;DiscussPost&gt;，因此我们需要传入实体类.class和搜索条件，然后匿名实现一个SearchResultMapper()方法，用于对elasticsearchTemplate得到的结果进行相应的处理，然后再返回。</p>
+<p>在匿名类中我们使用SearchResponse来接收elasticsearchTemplate返回的结果，在该方法中我们首先得到全部数据，如果数据不为空的话，我们遍历所有数据，对于每一条数据通过hit.getSourceAsMap().get(“xxx”)得到信息实例化一个post对象，然后得到高亮数据，通过hit.getHighlightFields().get(“title”)得到title的，content的也同理，然后如果高亮数据不为空，那么我们将添加了em标签的数据设置为post的title和content。最后我们使用一个AggregatedPageImpl的构造方法传入list和其他固定参数对结果进行返回。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// elasticsearchTemplate得到结果交给SearchResultMapper处理之后再返回</span></span><br><span class="line"><span class="keyword">return</span> elasticsearchTemplate.queryForPage(searchQuery, DiscussPost<span class="class">.<span class="keyword">class</span>, <span class="title">new</span> <span class="title">SearchResultMapper</span>() </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> &lt;T&gt; <span class="function">AggregatedPage&lt;T&gt; <span class="title">mapResults</span><span class="params">(SearchResponse searchResponse, Class&lt;T&gt; aClass, Pageable pageable)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 得到所有命中数据</span></span><br><span class="line">        SearchHits hits = searchResponse.getHits();</span><br><span class="line">        <span class="keyword">if</span> (hits.getTotalHits() &lt;= <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        List&lt;DiscussPost&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (SearchHit hit : hits)&#123;</span><br><span class="line">            DiscussPost post = <span class="keyword">new</span> DiscussPost();</span><br><span class="line">            <span class="comment">// 得到每个被遍历数据的信息，然后设置post</span></span><br><span class="line">            String id = hit.getSourceAsMap().get(<span class="string">"id"</span>).toString();</span><br><span class="line">            post.setId(Integer.valueOf(id));</span><br><span class="line"></span><br><span class="line">            String userId = hit.getSourceAsMap().get(<span class="string">"userId"</span>).toString();</span><br><span class="line">            post.setUserId(Integer.valueOf(userId));</span><br><span class="line"></span><br><span class="line">            String title = hit.getSourceAsMap().get(<span class="string">"title"</span>).toString();</span><br><span class="line">            post.setTitle(title);</span><br><span class="line"></span><br><span class="line">            String content = hit.getSourceAsMap().get(<span class="string">"content"</span>).toString();</span><br><span class="line">            post.setContent(content);</span><br><span class="line"></span><br><span class="line">            String status = hit.getSourceAsMap().get(<span class="string">"status"</span>).toString();</span><br><span class="line">            post.setStatus(Integer.valueOf(status));</span><br><span class="line"></span><br><span class="line">            String createTime = hit.getSourceAsMap().get(<span class="string">"createTime"</span>).toString();</span><br><span class="line">            post.setCreateTime(<span class="keyword">new</span> Date(Long.valueOf(createTime)));</span><br><span class="line"></span><br><span class="line">            String commentCount = hit.getSourceAsMap().get(<span class="string">"commentCount"</span>).toString();</span><br><span class="line">            post.setCommentCount(Integer.valueOf(commentCount));</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 处理高亮结果</span></span><br><span class="line">            <span class="comment">// 得到title字段的高亮数据</span></span><br><span class="line">            HighlightField titleField = hit.getHighlightFields().get(<span class="string">"title"</span>);</span><br><span class="line">            <span class="keyword">if</span> (titleField != <span class="keyword">null</span>)&#123;</span><br><span class="line">                <span class="comment">// 只取第一个高亮</span></span><br><span class="line">                post.setTitle(titleField.getFragments()[<span class="number">0</span>].toString());</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            HighlightField contentField = hit.getHighlightFields().get(<span class="string">"content"</span>);</span><br><span class="line">            <span class="keyword">if</span> (contentField != <span class="keyword">null</span>)&#123;</span><br><span class="line">                post.setTitle(contentField.getFragments()[<span class="number">0</span>].toString());</span><br><span class="line">            &#125;</span><br><span class="line">            list.add(post);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 对返回数据进行初始化，传入list，其他都是固定的（目前）</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> AggregatedPageImpl(list,pageable,</span><br><span class="line">                hits.getTotalHits(), searchResponse.getAggregations(),</span><br><span class="line">                searchResponse.getScrollId(), hits.getMaxScore());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="controller"><a href="#controller" class="headerlink" title="controller"></a>controller</h2><p>在controller层我们首先处理发布帖子和修改帖子之后将帖子加入到elasticsearch服务器中的处理，这里我们使用消息队列来进行实现，同样的对于一个事件我们需要指定主题，触发事件的人和实体类型、实体id，然后使用eventProducer.fireEvent(event)发布事件。具体我们要在发布帖子和用户对帖子进行评论的时候加入事件触发。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 触发发帖事件</span></span><br><span class="line">Event event = <span class="keyword">new</span> Event()</span><br><span class="line">        .setTopic(TOPIC_PUBLISH)</span><br><span class="line">        .setUserId(user.getId())</span><br><span class="line">        .setEntityType(ENTITY_TYPE_POST)</span><br><span class="line">        .setEntityId(discussPost.getId());</span><br><span class="line">eventProducer.fireEvent(event);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (comment.getEntityType() == ENTITY_TYPE_POST) &#123;</span><br><span class="line">    <span class="comment">// 触发发帖事件</span></span><br><span class="line">    event = <span class="keyword">new</span> Event()</span><br><span class="line">            .setTopic(TOPIC_PUBLISH)</span><br><span class="line">            .setUserId(hostHolder.getUser().getId())</span><br><span class="line">            .setEntityType(ENTITY_TYPE_POST)</span><br><span class="line">            .setEntityId(discussPostId);</span><br><span class="line">    eventProducer.fireEvent(event);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同时，对于该类事件，我们需要加入一个新的消费者进行消费。</p>
+<p>同样地通过设置主题，判断消息内容和格式，然后调用dao加入数据即可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 消费发帖事件</span></span><br><span class="line"><span class="meta">@KafkaListener</span>(topics = &#123;TOPIC_PUBLISH&#125;)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handlePublishMessage</span><span class="params">(ConsumerRecord record)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (record == <span class="keyword">null</span> || record.value() == <span class="keyword">null</span> )&#123;</span><br><span class="line">        logger.error(<span class="string">"消息的内容为空！"</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Event event = JSONObject.parseObject(record.value().toString(), Event<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">    <span class="keyword">if</span> (event == <span class="keyword">null</span>)&#123;</span><br><span class="line">        logger.error(<span class="string">"消息格式错误！"</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    DiscussPost post = discussPostService.findDiscussPostByid(event.getEntityId());</span><br><span class="line">    elasticsearchService.saveDiscussPost(post);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后就是对搜索结果进行处理的controller了</p>
+<p>首先通过service得到搜索结果，然后同之间一样，根据帖子的作者id得到作者user实例，根据帖子id查询点赞数量，然后聚合到map中，再将map传入list中，最后将list传给model</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SearchController</span> <span class="keyword">implements</span> <span class="title">CommunityConstant</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ElasticsearchService elasticsearchService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> LikeService likeService;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// /search?keyword=xxx</span></span><br><span class="line">    <span class="meta">@RequestMapping</span>(path = <span class="string">"/search"</span>,method = RequestMethod.GET)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">search</span><span class="params">(String keyword, Page page, Model model)</span></span>&#123;</span><br><span class="line">        <span class="comment">// 搜索帖子</span></span><br><span class="line">        org.springframework.data.domain.Page&lt;DiscussPost&gt; searchResult =</span><br><span class="line">                elasticsearchService.searchDiscussPost(keyword,page.getCurrent()-<span class="number">1</span>,page.getLimit());</span><br><span class="line">        <span class="comment">// 聚合数据</span></span><br><span class="line">        List&lt;Map&lt;String, Object&gt;&gt; discussPosts = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">if</span> (searchResult != <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">for</span> (DiscussPost post : searchResult)&#123;</span><br><span class="line">                Map&lt;String,Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">                <span class="comment">// 帖子</span></span><br><span class="line">                map.put(<span class="string">"post"</span>,post);</span><br><span class="line">                <span class="comment">// 作者</span></span><br><span class="line">                map.put(<span class="string">"user"</span>,userService.findUserById(post.getUserId()));</span><br><span class="line">                <span class="comment">// 点赞数量</span></span><br><span class="line">                map.put(<span class="string">"likeCount"</span>,likeService.findEntityLikeCount(ENTITY_TYPE_POST,post.getId()));</span><br><span class="line"></span><br><span class="line">                discussPosts.add(map);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        model.addAttribute(<span class="string">"discussPosts"</span>,discussPosts);</span><br><span class="line">        model.addAttribute(<span class="string">"keyword"</span>,keyword);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 分页信息</span></span><br><span class="line">        page.setPath(<span class="string">"/search?keyword="</span>+keyword);</span><br><span class="line">        page.setRows(searchResult == <span class="keyword">null</span> ? <span class="number">0</span> : (<span class="keyword">int</span>) searchResult.getTotalElements());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"/site/search"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/elasticsearch/" rel="tag"># elasticsearch</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/01/30/%E6%80%BB%E7%BB%93-8-kafka%E4%B9%8B%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%9F%A5/" rel="next" title="总结-8-kafka之系统通知">
+                <i class="fa fa-chevron-left"></i> 总结-8-kafka之系统通知
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/01/30/%E6%80%BB%E7%BB%93-10-Spring-Security/" rel="prev" title="总结-10-Spring-Security">
+                总结-10-Spring-Security <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/header.jpg"
+                alt="XiaoShanUzi" />
+            
+              <p class="site-author-name" itemprop="name">XiaoShanUzi</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">95</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xszzl" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:1191315155@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#elasticsearch"><span class="nav-number">1.</span> <span class="nav-text">elasticsearch</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#配置"><span class="nav-number">1.1.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#entity"><span class="nav-number">1.2.</span> <span class="nav-text">entity</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dao"><span class="nav-number">1.3.</span> <span class="nav-text">dao</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#service"><span class="nav-number">1.4.</span> <span class="nav-text">service</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#controller"><span class="nav-number">1.5.</span> <span class="nav-text">controller</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">XiaoShanUzi</span>
+
+  
+</div>
+
+<!--
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+-->
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv" style='display:none'>
+    本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+    <span class="post-meta-divider">|</span>
+</span>
+<span id="busuanzi_container_site_uv" style='display:none'>
+    有<span id="busuanzi_value_site_uv"></span>人看过我的博客啦
+</span>
+</div>
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'Nj9RsSmy8CMSkpzPmoVAX8CW-gzGzoHsz',
+        appKey: '7bKhqX57xz7vSCOyfY17QRUJ',
+        placeholder: '说点什么吧',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

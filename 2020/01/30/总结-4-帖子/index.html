@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="帖子," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="XiaoShanUzi" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="过滤敏感词过滤敏感词我们主要通过前缀树进行过滤，首先我们需要将所有敏感词全部加入到前缀树中，每一个结点我们需要定义是否是结束的标志和它之下的子节点">
+<meta property="og:type" content="article">
+<meta property="og:title" content="总结-4-帖子">
+<meta property="og:url" content="http://yoursite.com/2020/01/30/%E6%80%BB%E7%BB%93-4-%E5%B8%96%E5%AD%90/index.html">
+<meta property="og:site_name" content="XiaoShanUzi">
+<meta property="og:description" content="过滤敏感词过滤敏感词我们主要通过前缀树进行过滤，首先我们需要将所有敏感词全部加入到前缀树中，每一个结点我们需要定义是否是结束的标志和它之下的子节点">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191201173916270.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxOTE2ODEx,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191201190006336.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxOTE2ODEx,size_16,color_FFFFFF,t_70">
+<meta property="article:published_time" content="2020-01-30T09:27:15.000Z">
+<meta property="article:modified_time" content="2020-01-30T10:37:20.710Z">
+<meta property="article:author" content="XiaoShanUzi">
+<meta property="article:tag" content="帖子">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20191201173916270.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxOTE2ODEx,size_16,color_FFFFFF,t_70">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/01/30/总结-4-帖子/"/>
+
+
+
+
+
+  <title>总结-4-帖子 | XiaoShanUzi</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	
+	<a href="https://github.com/xszzl/" target="_blank" rel="noopener" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+	
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">XiaoShanUzi</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">to be a coder</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/30/%E6%80%BB%E7%BB%93-4-%E5%B8%96%E5%AD%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="XiaoShanUzi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="XiaoShanUzi">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">总结-4-帖子</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-30T17:27:15+08:00">
+                2020-01-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%89%9B%E5%AE%A2%E7%A4%BE%E5%8C%BA%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/" itemprop="url" rel="index">
+                    <span itemprop="name">牛客社区项目总结</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/01/30/%E6%80%BB%E7%BB%93-4-%E5%B8%96%E5%AD%90/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/01/30/%E6%80%BB%E7%BB%93-4-%E5%B8%96%E5%AD%90/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+ 	     <span class="post-meta-divider">|</span>
+	     <span id="busuanzi_value_page_pv"></span>次阅读
+	  
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="过滤敏感词"><a href="#过滤敏感词" class="headerlink" title="过滤敏感词"></a>过滤敏感词</h1><p>过滤敏感词我们主要通过前缀树进行过滤，首先我们需要将所有敏感词全部加入到前缀树中，每一个结点我们需要定义是否是结束的标志和它之下的子节点</p>
+<a id="more"></a>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">TrieNode</span></span>&#123;</span><br><span class="line">    <span class="comment">// 是否是敏感词结束的标识</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> isKeywordEnd = <span class="keyword">false</span>;</span><br><span class="line">    <span class="comment">// 子节点(key是下级字符，value是下级节点)</span></span><br><span class="line">    <span class="keyword">private</span> Map&lt;Character, TrieNode&gt; subNodes = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isKeywordEnd</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> isKeywordEnd;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setKeywordEnd</span><span class="params">(<span class="keyword">boolean</span> keywordEnd)</span> </span>&#123;</span><br><span class="line">        isKeywordEnd = keywordEnd;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 添加子节点</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addSubNode</span><span class="params">(Character c, TrieNode node)</span></span>&#123;</span><br><span class="line">        subNodes.put(c,node);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取子节点</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> TrieNode <span class="title">getSubNode</span><span class="params">(Character c)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> subNodes.get(c);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后我们需要将每一个敏感词按照规则加入到前缀树中去，每一个敏感词加入到前缀树中我们都需要从根节点开始，然后遍历敏感词，如果当前字符已经在当前结点的子节点中，那么我们直接进行下一个结点，如果不在就把初始化该字符的结点，然后加入当前结点的子节点中，然后进入下一个结点。最后，如果已经是敏感词的结尾，那么我们就要把当前结点的结束标志位设为1。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addKeyword</span><span class="params">(String keyword)</span></span>&#123;</span><br><span class="line">    TrieNode tempNode = rootNode;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; keyword.length(); i++)&#123;</span><br><span class="line">        <span class="keyword">char</span> c = keyword.charAt(i);</span><br><span class="line">        TrieNode subNode = tempNode.getSubNode(c);</span><br><span class="line">        <span class="keyword">if</span> (subNode == <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="comment">// 初始化子节点</span></span><br><span class="line">            subNode = <span class="keyword">new</span> TrieNode();</span><br><span class="line">            tempNode.addSubNode(c,subNode);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 指向子节点进入下一轮循环</span></span><br><span class="line">        tempNode = subNode;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 设置结束的标识</span></span><br><span class="line">        <span class="keyword">if</span> (i == keyword.length()-<span class="number">1</span>)&#123;</span><br><span class="line">            tempNode.setKeywordEnd(<span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>有了添加敏感词方法之后，我们需要有一份敏感词文件，然后就可以进行初始化前缀树了。首先我们需要从classpath中读到sensitive-word文件，然后读入字节流，将字节流转换为缓冲流，最后调用addKeyword()方法将敏感词加入到前缀树中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 根节点初始化</span></span><br><span class="line"><span class="keyword">private</span> TrieNode rootNode = <span class="keyword">new</span> TrieNode();</span><br><span class="line"></span><br><span class="line"><span class="meta">@PostConstruct</span>  <span class="comment">//这个注解表示这个方法是初始化方法，在Bean实例化时就会被调用，而Bean在服务启动时被初始化</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">// 编译之后所有文件都被编译到class中</span></span><br><span class="line">    <span class="keyword">try</span> (</span><br><span class="line">            <span class="comment">// 得到字节流</span></span><br><span class="line">            InputStream is = <span class="keyword">this</span>.getClass().getClassLoader().getResourceAsStream(<span class="string">"sensitive-words.txt"</span>);</span><br><span class="line">            <span class="comment">// 得到字符流，再转换为缓冲流</span></span><br><span class="line">            BufferedReader reader = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(is));</span><br><span class="line">    )&#123;</span><br><span class="line">        String keyword;</span><br><span class="line">        <span class="keyword">while</span> ((keyword = reader.readLine())!= <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="comment">// 添加到前缀树</span></span><br><span class="line">            <span class="keyword">this</span>.addKeyword(keyword);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e)&#123;</span><br><span class="line">        logger.error(<span class="string">"加载敏感词文件失败:"</span> +e.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>有了初始化完成之后的前缀树之后我们就可以对输入的内容进行过滤了。首先，我们获得根节点，设置两个指针，一个指向敏感词开始的指针，另一个指针指向扫描位置的指针，当用于扫描的指针指向字符串的末尾时表示扫描结束。</p>
+<p>在每一次遍历中，我们获得当前扫描位置的字符，如果当前字符是符号（如果当前字符是赌★博，那么我们需要跳过★，但如果是★赌★博★，我们只要跳过中间的那个符号即可），我们就直接跳过，判断下一个字符，position++，但是如果当前节点是根节点，那么该符号是合法的，我们直接判断以下一个字符为开始的字符，即begin++。</p>
+<p>然后我们需要检查当前节点的子节点是否有当前字符，如果没有，那么这个begin-position的字符串不是敏感词，那么我们可以将begin加入到StringBuilder中，然后begin++,position=begin，再次从根节点开始；如果有，我们需要判断是否是敏感词的结尾，如果是，我们需要将begin-position的串替换为REPLACEMENT，然后begin从position的下一个开始，同时从根节点重新开始，如果不是，我们就继续检查下一个字符即可。<br>当position结束时，begin还没有结束，此时要将begin-position的字符串也加入到sb中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">filter</span><span class="params">(String text)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (StringUtils.isBlank(text))&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 指向树的指针</span></span><br><span class="line">    TrieNode tempNode = rootNode;</span><br><span class="line">    <span class="comment">// 指向敏感词开始的指针</span></span><br><span class="line">    <span class="keyword">int</span> begin = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 指向敏感词当前扫描位置的指针</span></span><br><span class="line">    <span class="keyword">int</span> position = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 过滤之后的结果</span></span><br><span class="line">    StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 遍历过程是由begin来定位的，和node比较的是position指向的字符</span></span><br><span class="line">    <span class="keyword">while</span> (position&lt;text.length())&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">char</span> c = text.charAt(position);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 跳过符号</span></span><br><span class="line">        <span class="keyword">if</span> (isSymbol(c))&#123;</span><br><span class="line">            <span class="comment">// 若树上的指针指向根节点，将此符号记入结果，让敏感词开始指针前进</span></span><br><span class="line">            <span class="keyword">if</span> (tempNode == rootNode)&#123;</span><br><span class="line">                sb.append(c);</span><br><span class="line">                begin++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 这个指针是一定会前进的，因为要跳过符号</span></span><br><span class="line">            position++;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 检查下级节点</span></span><br><span class="line">        tempNode = tempNode.getSubNode(c);</span><br><span class="line">        <span class="keyword">if</span> (tempNode == <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="comment">// 如果当前串不是敏感词串</span></span><br><span class="line">            sb.append(text.charAt(begin));</span><br><span class="line">            <span class="comment">// 进入下一个位置</span></span><br><span class="line">            position = ++begin;</span><br><span class="line">            <span class="comment">// 重新指向根节点</span></span><br><span class="line">            tempNode = rootNode;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (tempNode.isKeywordEnd())&#123;</span><br><span class="line">            <span class="comment">// 如果当前串是敏感词串,则替换该字符串</span></span><br><span class="line">            sb.append(REPLACEMENT);</span><br><span class="line">            <span class="comment">// 进入下一个位置</span></span><br><span class="line">            begin = ++position;</span><br><span class="line">            <span class="comment">// 重新指向根节点</span></span><br><span class="line">            tempNode = rootNode;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 检查下一个字符</span></span><br><span class="line">            position++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将最后的字符记入结果</span></span><br><span class="line">    sb.append(text.substring(begin));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> sb.toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>@Component注解使得Springboot在启动时，将该类注册到容器中，并实例化，因此启动的时候就会将前缀树初始化。</p>
+<h2 id="发布帖子"><a href="#发布帖子" class="headerlink" title="发布帖子"></a>发布帖子</h2><p>在发布帖子需要注意用户必须登录，然后过滤敏感词</p>
+<h2 id="帖子详情"><a href="#帖子详情" class="headerlink" title="帖子详情"></a>帖子详情</h2><p>帖子详情我们需要的信息有帖子、作者和评论。帖子和用户的数据表我们已经给出过了，接下来给出评论的数据表<br><img src="https://img-blog.csdnimg.cn/20191201173916270.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxOTE2ODEx,size_16,color_FFFFFF,t_70" alt="评论数据表"><br>其中，user_id代表发表评论的用户id，entity_type表示评论的对象是什么类型，是回复帖子还是回复其他人的评论，entity_id表示评论的对象的id，target_id表示回复的用户的id，content表示内容，status为0表示正常。</p>
+<p>具体的操作我们主要在controller中进行操作，service层主要做的就是调用dao得到数据。查看帖子详情，我们需要从url中得到帖子id，然后调用service得到帖子，再得到帖子的作者，将帖子和作者加入到model中，然后评论多的话我们需要分页，因此需要设置分页信息。</p>
+<p>然后我们得到回复帖子的所有评论，然后遍历每一个评论创建一个评论VO（Value Object）列表，方便模板显示。</p>
+<p>commentVoList是一个列表，每一项是一个Map，map里需要存放评论、作者和相关的回复，而评论的回复其实也是一个泛型为Comment的列表，因此我们需要通过findCommentsByEntity的方法得到该评论的所有回复，设置entity_type为评论，entity_target为该评论的id，得到所有该评论的回复之后再将所有的reply加入到一个list中，每个reply为一个map，有回复内容，回复作者和回复目标（null或者User），最后将reply列表加入到该条评论的map中即可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(path = <span class="string">"/detail/&#123;discussPostId&#125;"</span>,method = RequestMethod.GET)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getDiscussPost</span><span class="params">(@PathVariable(<span class="string">"discussPostId"</span>)</span> <span class="keyword">int</span> discussPostId, Model model, Page page)</span>&#123;</span><br><span class="line">    <span class="comment">// 帖子</span></span><br><span class="line">    DiscussPost post = discussPostService.findDiscussPostByid(discussPostId);</span><br><span class="line">    model.addAttribute(<span class="string">"post"</span>,post);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 作者</span></span><br><span class="line">    User user = userService.findUserById(post.getUserId());</span><br><span class="line">    model.addAttribute(<span class="string">"user"</span>,user);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 评论分页信息</span></span><br><span class="line">    page.setLimit(<span class="number">5</span>);</span><br><span class="line">    page.setPath(<span class="string">"/discuss/detail/"</span> + discussPostId);</span><br><span class="line">    page.setRows(post.getCommentCount());</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 评论：得到当前帖子的评论</span></span><br><span class="line">    <span class="comment">// 回复：对评论进行回复</span></span><br><span class="line">    <span class="comment">// 评论列表</span></span><br><span class="line">    List&lt;Comment&gt; commentList = commentService.findCommentsByEntity(ENTITY_TYPE_POST, post.getId(),page.getOffset(),page.getLimit());</span><br><span class="line">    <span class="comment">// 评论VO列表（Value Object），也就是对评论列表进行处理，方便模板显示</span></span><br><span class="line">    List&lt;Map&lt;String,Object&gt;&gt; commentVoList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="keyword">if</span>(commentList != <span class="keyword">null</span>)&#123;</span><br><span class="line">        <span class="keyword">for</span> (Comment comment : commentList)&#123;</span><br><span class="line">            <span class="comment">// 评论VO</span></span><br><span class="line">            Map&lt;String, Object&gt; commentVo = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">            <span class="comment">// 评论</span></span><br><span class="line">            commentVo.put(<span class="string">"comment"</span>,comment);</span><br><span class="line">            <span class="comment">// 作者</span></span><br><span class="line">            commentVo.put(<span class="string">"user"</span>,userService.findUserById(comment.getUserId()));</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 回复列表</span></span><br><span class="line">            List&lt;Comment&gt; replyList = commentService.findCommentsByEntity(ENTITY_TYPE_COMMENT,comment.getId(),<span class="number">0</span>,Integer.MAX_VALUE);</span><br><span class="line">            <span class="comment">// 回复VO列表</span></span><br><span class="line">            List&lt;Map&lt;String,Object&gt;&gt; replyVoList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">            <span class="keyword">if</span> (replyList != <span class="keyword">null</span>)&#123;</span><br><span class="line">                <span class="keyword">for</span> (Comment reply : replyList)&#123;</span><br><span class="line">                    Map&lt;String,Object&gt; replyVo = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">                    <span class="comment">// 回复</span></span><br><span class="line">                    replyVo.put(<span class="string">"reply"</span>,reply);</span><br><span class="line">                    <span class="comment">// 作者</span></span><br><span class="line">                    replyVo.put(<span class="string">"user"</span>,userService.findUserById(reply.getUserId()));</span><br><span class="line">                    <span class="comment">// 回复目标</span></span><br><span class="line">                    User target = reply.getTargetId() == <span class="number">0</span> ? <span class="keyword">null</span> : userService.findUserById(reply.getTargetId());</span><br><span class="line">                    replyVo.put(<span class="string">"target"</span>,target);</span><br><span class="line"></span><br><span class="line">                    replyVoList.add(replyVo);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            commentVo.put(<span class="string">"replys"</span>,replyVoList);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 该评论的回复数量</span></span><br><span class="line">            <span class="keyword">int</span> replyCount = commentService.findCommentsCount(ENTITY_TYPE_COMMENT,comment.getId());</span><br><span class="line">            commentVo.put(<span class="string">"replyCount"</span>,replyCount);</span><br><span class="line"></span><br><span class="line">            commentVoList.add(commentVo);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    model.addAttribute(<span class="string">"comments"</span>,commentVoList);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"/site/discuss-detail"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>再模板中我们只需要遍历传入的CommentVOList和每一个评论的回复ReplyVOList即可。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"media pb-3 pt-3 mb-3 border-bottom"</span> <span class="attr">th:each</span>=<span class="string">"cvo:$&#123;comments&#125;"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"pb-3 pt-3 mb-3 border-bottom"</span> <span class="attr">th:each</span>=<span class="string">"rvo:$&#123;cvo.replys&#125;"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="添加评论"><a href="#添加评论" class="headerlink" title="添加评论"></a>添加评论</h2><p>在添加评论的地方，我们插入了事务的概念，所谓事务就是一系列操作要么全部执行，要么全部不执行。在SpringBoot中我们使用@Transactional注解来注明该方法是事务，isolation表示隔离方式，propagation表示传播机制，<br><img src="https://img-blog.csdnimg.cn/20191201190006336.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxOTE2ODEx,size_16,color_FFFFFF,t_70" alt="隔离方式"><br>而传播机制方面，业务方法A可能会调用业务方法B，此时以哪个业务机制为准<br>    // REQUIRED：支持当前事务（外部事物，即调用者），如果不存在则创建新事务<br>    // REQUIRES_NEW：创建一个新的事务，并且暂停当前事务（外部事物）<br>    // NESTED：如果当前存在事务（外部事务），则嵌套在该事务中执行（独立的提高和回滚），否则就会和REQUIRED一样<br>（还不是很懂）</p>
+<p>在添加评论时我们需要对用户输入的内容进行格式化处理(标签等内容不会转义)和过滤敏感词。添加完评论之后，如果是直接对帖子的回复，那么我们需要更新帖子的评论数量，根据entity_type和entity_id来得到评论总数，之所以要两个参数，是因为回复帖子的entity_id是帖子的id，而回复评论的entity_id是评论的id，两者可能会重复因此需要两个参数来定位。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span>(isolation = Isolation.READ_COMMITTED,propagation = Propagation.REQUIRED)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">addComment</span><span class="params">(Comment comment)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (comment == <span class="keyword">null</span>)&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"参数不能为空"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 添加评论</span></span><br><span class="line">    comment.setContent(HtmlUtils.htmlEscape(comment.getContent()));</span><br><span class="line">    comment.setContent(sensitiveFilter.filter(comment.getContent()));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> rows = commentMapper.insertComment(comment);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 更新帖子评论数量</span></span><br><span class="line">    <span class="keyword">if</span> (comment.getEntityType() == ENTITY_TYPE_POST)&#123;</span><br><span class="line">        <span class="keyword">int</span> count = commentMapper.selectCountByEntity(comment.getEntityType(),comment.getEntityId());</span><br><span class="line">        discussPostService.updateCommentCount(comment.getEntityId(),count);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> rows;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>entity_type和entity_id在html中设置了</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">class</span>=<span class="string">"input-size"</span> <span class="attr">name</span>=<span class="string">"content"</span> <span class="attr">placeholder</span>=<span class="string">"请输入你的观点"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"hidden"</span> <span class="attr">name</span>=<span class="string">"entityType"</span> <span class="attr">value</span>=<span class="string">"2"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"hidden"</span> <span class="attr">name</span>=<span class="string">"entityId"</span> <span class="attr">th:value</span>=<span class="string">"$&#123;cvo.comment.id&#125;"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%B8%96%E5%AD%90/" rel="tag"># 帖子</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/01/30/%E6%80%BB%E7%BB%93-3-%E7%99%BB%E5%BD%95/" rel="next" title="总结-3-登录">
+                <i class="fa fa-chevron-left"></i> 总结-3-登录
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/01/30/%E6%80%BB%E7%BB%93-5-%E7%A7%81%E4%BF%A1/" rel="prev" title="总结-5-私信">
+                总结-5-私信 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/header.jpg"
+                alt="XiaoShanUzi" />
+            
+              <p class="site-author-name" itemprop="name">XiaoShanUzi</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">95</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xszzl" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:1191315155@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#过滤敏感词"><span class="nav-number">1.</span> <span class="nav-text">过滤敏感词</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#发布帖子"><span class="nav-number">1.1.</span> <span class="nav-text">发布帖子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#帖子详情"><span class="nav-number">1.2.</span> <span class="nav-text">帖子详情</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加评论"><span class="nav-number">1.3.</span> <span class="nav-text">添加评论</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">XiaoShanUzi</span>
+
+  
+</div>
+
+<!--
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+-->
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv" style='display:none'>
+    本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+    <span class="post-meta-divider">|</span>
+</span>
+<span id="busuanzi_container_site_uv" style='display:none'>
+    有<span id="busuanzi_value_site_uv"></span>人看过我的博客啦
+</span>
+</div>
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'Nj9RsSmy8CMSkpzPmoVAX8CW-gzGzoHsz',
+        appKey: '7bKhqX57xz7vSCOyfY17QRUJ',
+        placeholder: '说点什么吧',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
