@@ -1,6 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>牛客专栏-常用命令</title>
+    <url>/2020/02/10/%E7%89%9B%E5%AE%A2%E4%B8%93%E6%A0%8F-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<h2 id="常用命令-Linux命令"><a href="#常用命令-Linux命令" class="headerlink" title="常用命令 - Linux命令"></a>常用命令 - Linux命令</h2><h3 id="grep命令"><a href="#grep命令" class="headerlink" title="grep命令"></a>grep命令</h3><a id="more"></a>
+
+<p>grep（Global Regular Expression Print）使用正则表达式搜索文本，并把匹配的行打印出来。</p>
+<ul>
+<li><strong>查找文件file.log中“password”字段</strong>：grep ”password” file.log</li>
+<li><strong>查找文件file.log中“passport”字段，并且统计出出现次数</strong>：grep “password” file.log | wc -l 或者 grep “password” file.log -c</li>
+</ul>
+<p>管道操作符“|”仅能处理经由前面一个指令传出的正确输出信息，也就是standard output的信息，对于standard error信息没有直接处理能力。然后传递给下一个命令，作为标准的输入standard input。然后wc(word count)可以统计指定文件中的字节数，字数，行数，并将统计结果显示输出。</p>
+<h3 id="awk命令"><a href="#awk命令" class="headerlink" title="awk命令"></a>awk命令</h3><p>awk命令主要是将一行分为多个字段处理，格式如下</p>
+<figure class="highlight isbl"><table><tr><td class="code"><pre><span class="line"><span class="variable">awk</span> [-<span class="variable">F</span> <span class="variable">field</span>-<span class="variable">separator</span>] <span class="string">'commands'</span> <span class="variable">input</span>-<span class="function"><span class="title">file</span>(<span class="variable">s</span>)</span></span><br></pre></td></tr></table></figure>
+
+<p>其中commands是真正的awk命令，[-F域分隔符]是可选的，input-file(s)是待处理文件。在awk中，文件的每一行中，由域分隔符分开的每一列称为一个域。通常在不指名-F域分隔符的情况下，默认的域分隔符是空格。我们使用$1表示第一个域，$0表示整行。</p>
+<h3 id="top和ps命令：探测进程"><a href="#top和ps命令：探测进程" class="headerlink" title="top和ps命令：探测进程"></a>top和ps命令：探测进程</h3><p><strong>ps命令</strong></p>
+<p>默认只会显示运行在当前控制台下的属于当前用户的进程</p>
+<ul>
+<li>ps -A和ps -e可以显示所有进程</li>
+<li>ps -ef显示完整格式的所有进程</li>
+<li>指定进程名，ps -ef | grep “java” 找出进程名中包括java的所有进程</li>
+</ul>
+<p><strong>top命令</strong></p>
+<p>可以实时监控进程，输出的第一部分是显示系统的概括。</p>
+<ul>
+<li>第一行显示了当前时间、系统的运行时间、登录的用户和系统的平均负载（1min 5min 15min）</li>
+<li>第二行显示了进程的概要信息，有多少进程处于运行、休眠、停止或者僵化状态</li>
+<li>第三行是CPU概要信息</li>
+<li>第四行是系统内存的状态</li>
+</ul>
+<p><strong>ps和top的区别</strong>：</p>
+<ul>
+<li>ps看到的是命令执行瞬间的进程信息，而top可以持续的监控</li>
+<li>ps只是查看进程，而top还可以监视系统性能，如平均负载，cpu和内存的消耗</li>
+<li>top可以操作进程，如改变优先级（命令r）和关闭进程（命令k）</li>
+<li>ps主要是查看进程的，关注点在于查看需要查看的进程</li>
+<li>top主要看cpu，内存使用情况，及占用资源最多的进程由高到低排序，关注点在于资源占用情况。</li>
+</ul>
+<h3 id="sed命令"><a href="#sed命令" class="headerlink" title="sed命令"></a>sed命令</h3><p>sed命令是利用脚本来处理文本文件。sed可按照脚本的指令来处理、编辑文本文件。sed主要用来自动编辑一个或多个文件、简化对文件的反复操作、编写转换程序等。</p>
+<h3 id="sort命令"><a href="#sort命令" class="headerlink" title="sort命令"></a>sort命令</h3><ul>
+<li>正序排序：sort -n test.txt</li>
+<li>反序排序：sort -nr test.txt</li>
+</ul>
+<h3 id="tail和head命令"><a href="#tail和head命令" class="headerlink" title="tail和head命令"></a>tail和head命令</h3><ul>
+<li><strong>tail -n 2 file.log</strong> 可以查看文件的最后两行</li>
+<li><strong>tail -f file.log</strong> 可以实时查看文件的后边追加的部分</li>
+<li><strong>head -n 2 file.log</strong> 可以查看文件的开始2行</li>
+</ul>
+<h2 id="Maven命令"><a href="#Maven命令" class="headerlink" title="Maven命令"></a>Maven命令</h2><h3 id="Maven是什么"><a href="#Maven是什么" class="headerlink" title="Maven是什么"></a>Maven是什么</h3><p>Maven是一个跨平台的强大构建工具，可以实现自动化构建过程，从“清理、编译、测试、生成报告、打包和部署”都可以使用成熟的插件，通过简单的命令实现，避免了重复的构建过程。</p>
+<p>Maven不仅是一个优秀的项目构建工具，还是一个依赖管理工具，他提供了强大的中央仓库，能够帮助我们自动下载依赖。</p>
+<p>Maven提供了一个很好的解决方案。Maven通过使用GroupId和ArtifactId来标识每一个构件（依赖），也就是通过一个坐标系精确地定位到了一个Java类库。Maven的中央仓库几乎可以找到任何流行的开源类库，通过在项目POM文件中配置，都可以免费下载。</p>
+<h3 id="Maven仓库"><a href="#Maven仓库" class="headerlink" title="Maven仓库"></a>Maven仓库</h3><p><img src="/images/Maven%E4%BB%93%E5%BA%93.png" alt="Maven仓库"></p>
+<ul>
+<li><strong>本地仓库</strong>：就是Maven在本地存储构件的仓库，默认是在用户的.m2/repository/目录下</li>
+<li><strong>远程仓库</strong>：分为中央仓库、私服以及其他公共库。用户是在和私服打交道，包括上传和下载构件。当私服满足不了我们的需求时，私服会和中央仓库或者其余公共仓库交互，将用户需要的构件缓存在私服仓库中。</li>
+</ul>
+<p><strong>私服</strong>：私服是一种特殊的远程仓库，是在局域网内的仓库服务，私服代理广域网上的远程仓库，供局域网内的Maven用户使用。</p>
+<h4 id="setting-xml文件"><a href="#setting-xml文件" class="headerlink" title="setting.xml文件"></a>setting.xml文件</h4><ul>
+<li><strong>localRepository</strong>：本地仓库的目录。默认是用户目录下的 .m2/repository 目录。</li>
+<li><strong>interactiveMode</strong>：表示是否使用交互模式，默认为true；如果设为false，那么当Maven需要用户数据的时候，它会使用默认值</li>
+<li><strong>offline</strong>：表示是否离线，默认为false。这个属性表示Maven进行项目编译和部署等操作时，是否允许Maven进行联网来下载信息等。</li>
+<li><strong>mirrors</strong>：定义一系列的远程仓库镜像，用于缓解远程仓库的压力</li>
+<li><strong>profiles</strong>：用于指定一系列的profile</li>
+<li><strong>activeProfiles</strong>：指定当前正在活跃的profile</li>
+<li><strong>servers</strong>：表示当需要连接到一个远程服务器的时候需要使用到的验证方式</li>
+</ul>
+<h3 id="Maven的生命周期"><a href="#Maven的生命周期" class="headerlink" title="Maven的生命周期"></a>Maven的生命周期</h3><h4 id="clean生命周期"><a href="#clean生命周期" class="headerlink" title="clean生命周期"></a>clean生命周期</h4><p>clean生命周期的目的是清理项目，删除前一次构建在target文件夹下生成的各个JAR包等，它包含三个阶段：</p>
+<ul>
+<li>pre-clean 执行一些清理前需要完成的工作</li>
+<li>clean 清理上一次构建生成的文件</li>
+<li>post-clean 执行一些清理后需要完成的工作</li>
+</ul>
+<h4 id="site生命周期"><a href="#site生命周期" class="headerlink" title="site生命周期"></a>site生命周期</h4><p>site生命周期的目的是建立和发布项目站点，Maven可以给与POM所包含的信息，生成一个站点，方便团队交流和发布项目信息，其生命周期阶段包含：</p>
+<ul>
+<li>pre- site</li>
+<li>site 生成项目站点文档</li>
+<li>post-site</li>
+<li>site-deploy 将生成的项目站点发布到服务器上</li>
+</ul>
+<h4 id="default生命周期"><a href="#default生命周期" class="headerlink" title="default生命周期"></a>default生命周期</h4><p>default生命周期定义了真正构建项目中需要执行的所有步骤</p>
+<ul>
+<li>validate</li>
+<li>initialize</li>
+<li>generate-sources</li>
+<li>process-sources</li>
+<li>generate-resources</li>
+<li>process-resources</li>
+<li><strong>compile：编译项目的主源码</strong></li>
+<li>process-classes</li>
+<li>generate-test-sources</li>
+<li>process-test-sources</li>
+<li>generate-test-resources</li>
+<li>process-test-resources</li>
+<li>test-compile</li>
+<li>process-test-classed</li>
+<li>test：使用单元测试框架运行测试，测试代码不会被打包或部署</li>
+<li>prepare-package</li>
+<li><strong>package：接受编译好的代码，打包成可发布的格式，JAR/WAR 等</strong></li>
+<li>pre-integration-test</li>
+<li>integration-test</li>
+<li>post-integration-test</li>
+<li>verify</li>
+<li><strong>install：安装构件到本地仓库</strong></li>
+<li><strong>deploy：发布构件到远程仓库</strong></li>
+</ul>
+<h3 id="常用构建命令"><a href="#常用构建命令" class="headerlink" title="常用构建命令"></a>常用构建命令</h3><ul>
+<li><strong>mvn clean</strong>：删除上次打包生成的target文件夹</li>
+<li><strong>mvn compile</strong>：对源代码进行编译</li>
+<li><strong>mvn clean package</strong>：用于清除上次打包生成的target文件夹并且对项目进行打包</li>
+<li><strong>mvn clean install</strong>：用于清除上次打包生成的target文件夹并且重新将项目进行打包，安装到本地仓库</li>
+<li><strong>mvn clean deploy</strong>：用于清除上次打包生成的target文件夹并且重新将项目进行打包，发布到远程仓库（私服）</li>
+</ul>
+<h2 id="Git命令"><a href="#Git命令" class="headerlink" title="Git命令"></a>Git命令</h2><h3 id="Git的工作原理"><a href="#Git的工作原理" class="headerlink" title="Git的工作原理"></a>Git的工作原理</h3><p><img src="/images/git%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.png" alt="git工作原理"></p>
+<ul>
+<li><strong>工作区</strong>：也就是在我们本地的一个git仓库目录下，除了隐藏的.git文件之外的所有内容</li>
+<li><strong>暂缓区</strong>：数据暂时存放的区域，可以在工作区和版本库之间进行数据交互</li>
+<li><strong>版本库</strong>：就是我们的Git本地版本仓库，也就是.git目录下就是版本库。通过git push命令可以将本地的版本推送到远程仓库。</li>
+<li><strong>远程仓库</strong>：是我们在远程进行版本控制的仓库，比如GitLab或者GitHub等服务器上的仓库。</li>
+</ul>
+<h3 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h3><ul>
+<li><strong>git init</strong>：初始化本地仓库</li>
+<li><strong>git add</strong>：往暂缓区中添加内容</li>
+<li><strong>git status</strong>：查看当前的状态</li>
+<li><strong>git commit -m “xxx”</strong>：提交到版本库</li>
+<li><strong>git remote add origin “xxx”</strong>：将本地仓库和远程仓库建立连接</li>
+<li><strong>git push origin master:master</strong>：将本地版本库中的文件推送到远程仓库中。</li>
+<li><strong>git branch new</strong>：创建一个新分支</li>
+<li><strong>git branch -d new</strong>：删除new分支</li>
+<li><strong>git check new</strong>：切换到新分支</li>
+<li><strong>git pull origin master</strong>：将远程master代码更新到本地当前分支</li>
+<li><strong>git merge new</strong>：将本地new分支代码合并到当前分支上</li>
+</ul>
+<h4 id="git-reset-–hard-和-–soft-的区别是啥"><a href="#git-reset-–hard-和-–soft-的区别是啥" class="headerlink" title="git reset –hard 和 –soft 的区别是啥"></a>git reset –hard 和 –soft 的区别是啥</h4><p>通过<strong>git log</strong>可以查看当前分支的<strong>commit_id</strong>提交记录。当我们想回退到某个版本的时候，可以采用<strong>git reset</strong>命令，之后通过<strong>git push origin branchName -f</strong>命令来强制将当前分支push到远程仓库。</p>
+<ul>
+<li>–hard 表示将文件恢复到指定的版本，删除掉了所有的改动，包括工作区和暂缓区</li>
+<li>–soft 则是将当前分支的HEAD指向指定的版本，并且把指定版本到重置之前的所有改动放入暂缓区中，经常用来合并多个commit_id</li>
+</ul>
+<h4 id="git-reset-和-git-revert的区别是啥"><a href="#git-reset-和-git-revert的区别是啥" class="headerlink" title="git reset 和 git revert的区别是啥"></a>git reset 和 git revert的区别是啥</h4><p>git reset是通过回退HEAD来完成版本回退。git revert是生成了一次新的提交，新的提交和你想去掉的那次提交的内容刚好相反，本质上也是一次新的提交，也就是HEAD继续向前进。</p>
+]]></content>
+      <categories>
+        <category>牛客专栏</category>
+      </categories>
+      <tags>
+        <tag>常用命令</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>IO多路复用</title>
     <url>/2020/02/09/IO%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/</url>
     <content><![CDATA[<h2 id="IO多路复用"><a href="#IO多路复用" class="headerlink" title="IO多路复用"></a>IO多路复用</h2><h3 id="select"><a href="#select" class="headerlink" title="select"></a>select</h3><a id="more"></a>
@@ -4036,47 +4182,6 @@ Process finished with exit code 0</code></pre>]]></content>
       </tags>
   </entry>
   <entry>
-    <title>垃圾收集器与内存分配策略（2）</title>
-    <url>/2020/01/25/%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%8E%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5%EF%BC%882%EF%BC%89/</url>
-    <content><![CDATA[<p><strong>深入理解Java虚拟机第三章内容记录之二</strong></p>
-<a id="more"></a>
-
-<h2 id="经典垃圾收集器"><a href="#经典垃圾收集器" class="headerlink" title="经典垃圾收集器"></a>经典垃圾收集器</h2><h3 id="Serial收集器"><a href="#Serial收集器" class="headerlink" title="Serial收集器"></a>Serial收集器</h3><p>Serial收集器是一个单线程工作的收集器，但它的“单线程”的意义并不仅仅是说明它只会使用一个处理器或一条收集线程去完成工作，更重要的是强调在它进行垃圾收集时，必须暂停其他所有工作线程，直到它收集结束。其中Serial收集器采用复制算法暂停所有用户进程，Serial Old采取标记-整理算法暂停所有用户线程。</p>
-<p>迄今为止，Serial收集器仍然是HotSpot虚拟机运行在客户端模式下默认的新生代收集器，对于内存资源受限的环境，它是所有收集器里额外内存消耗最小的；对于单处理器或者处理器核心较少的环境来说，Serial收集器由于没有线程交互的开销，专心做垃圾收集可以获得最高的单线程收集效率。</p>
-<h3 id="ParNew收集器"><a href="#ParNew收集器" class="headerlink" title="ParNew收集器"></a>ParNew收集器</h3><p>ParNew收集器实质上是Serial收集器的多线程并行版本。</p>
-<p>由于CMS最为老年代垃圾收集器，而Parallel Scavenge无法与CMS配合工作，因此新生代只能选择Serial或者ParNew。</p>
-<h3 id="Parallel-Scavenge收集器"><a href="#Parallel-Scavenge收集器" class="headerlink" title="Parallel Scavenge收集器"></a>Parallel Scavenge收集器</h3><p>Parallel Scavenge也是一款新生代收集器，同样是基于标记-复制算法实现的收集器，同样能够并行。但是该收集器注重的是吞吐量（Throughput）。<br>$$<br>吞吐量=运行用户代码时间/(运行用户代码时间+运行垃圾收集时间)<br>$$<br>停顿时间越短就越适合需要与用户交互或需要保证服务响应质量的程序，良好的响应速度能提升用户体验；而高吞吐量则可以最高效率地利用处理器资源，尽快完成程序的运算任务，主要适合在后台运算而不需要太多交互的分析任务。</p>
-<p>Parallel Scavenge收集器提供了两个参数用于精确控制吞吐量，分别是控制最大垃圾收集停顿时间的-XX:MaxGCPauseMillis参数以及直接设置吞吐量大小的-XX:GCTimeRatio参数。</p>
-<h3 id="Serial-Old收集器"><a href="#Serial-Old收集器" class="headerlink" title="Serial Old收集器"></a>Serial Old收集器</h3><p>该收集器是Serial收集器的老年代版本，同样是单线程，使用标记-整理算法。主要意义是供客户端模式下的HotSpot虚拟机使用。</p>
-<h3 id="Parallel-Old收集器"><a href="#Parallel-Old收集器" class="headerlink" title="Parallel Old收集器"></a>Parallel Old收集器</h3><p>Parallel Old是Parallel Scavenge的老年代版本，支持多线程并发收集，基于标记-整理算法实现。</p>
-<h3 id="CMS"><a href="#CMS" class="headerlink" title="CMS"></a>CMS</h3><p>CMS（Concurrent Mark Sweep)收集器是一种以获取最短回收停顿时间为目标的收集器，是基于标记-清除算法实现的，它的运行过程可分为四个步骤，包括初始标记，并发标记，重新标记和并发清除。其中初始标记和重新标记仍然需要“Stop The World”。</p>
-<p>初始标记仅仅只是标记一下GC Roots能直接关联到的对象，速度很快；并发标记阶段就是从GC Roots的直接关联对象开始遍历整个对象图的过程，这个过程耗时较长，但是不需要停顿用户线程，可以与垃圾收集线程一起并发运行；而重新标记阶段则是为了修正并发标记期间，因用户程序继续运作而导致标记产生变动的那一部分对象的标记记录，这个阶段的停顿时间通常会比初始标记阶段稍长一些，但也远比并发标记阶段的时间短；最后是并发清除阶段，清理删除掉标记阶段判断的已经死亡的对象，由于不需要移动存活对象，所以这个阶段也是可以与用户线程同时并发的。</p>
-<p>CMS有以下三个明显的缺点：</p>
-<p>首先CMS收集器对处理器资源非常敏感。在并发阶段，它虽然不会导致用户线程停顿，但却会因为占用了一部分线程而导致应用程序变慢，降低总吞吐量。CMS默认启动的回收线程数是（处理器核心数量+3）/4.</p>
-<p>然后，由于CMS收集器无法处理“浮动垃圾”，有可能出现“Concurrent Mode Failure”失败进而导致另一次完全“Stop The World”的Full GC的产生。要是CMS运行期间预留的内存无法满足程序分配新对象的需要就会发生一次“并发失败”（Concurrent Mode Failure），这时候虚拟机将不得不启动后备方案：冻结用户线程的执行，临时启用Serial Old收集器来重新进行老年代的垃圾收集，但这样停顿时间就太长了。</p>
-<p>最后就是空间碎片的问题，如果老年代无法找到足够大的连续空间来分配当前对象，就又会触发Full GC。</p>
-<h3 id="Garbage-First收集器"><a href="#Garbage-First收集器" class="headerlink" title="Garbage First收集器"></a>Garbage First收集器</h3><p>G1是一款主要面向服务端应用的垃圾收集器，它可以面向堆内存任何部分来组成回收集（Collection Set）进行回收，衡量标准不再是它属于哪个分代，而是哪块内存中存放的垃圾数量最多，回收收益最大，这就是G1收集器的Mixed GC模式。</p>
-<p>G1开创的基于Region的堆内存布局是它能够实现这个目标的关键。G1不再坚持固定大小以及固定数量的分代区域划分，而是把连续的Java堆划分为多个大小相等的独立区域（Region），每一个Region都可以根据需要，扮演新生代的Eden空间、Survivor空间，或者老年代空间。收集器能够对扮演不同角色的Region采用不同的策略去处理。</p>
-<p>Region中还有一类特殊的Humongous区域，专门用来存储大对象。</p>
-<p>G1收集器的新生代和老年代不再是固定的，它们都是一系列区域的动态集合。G1收集器之所以能够建立可预测的停顿时间模型，是因为它将Region作为单次回收的最小单元，这样可以有计划地避免在整个Java堆中进行全区域的垃圾收集。更具体的思路是让G1收集器去跟踪各个Region里面的垃圾堆积的“价值”大小，价值即回收所获得的空间大小以及回收所需时间的经验值，然后在后台维护一个优先级列表，每次根据用户设定允许的收集停顿时间，优先处理回收价值收益最大的那些Region。</p>
-<p>G1收集器的运作过程大致可以划分为以下四个步骤：</p>
-<ol>
-<li>初始标记（Initial Marking）:仅仅只是标记一下GC Roots能直接关联到的对象，并且修改TAMS指针的值（Top at Mark Start，把Region中的一部分空间划分出来用于并发回收过程中的新对象分配，并发回收时新分配的对象地址必须要在这两个指针位置之上），让下一阶段用户线程并发运行时，能正确地在可用的Region中分配新对象。这个阶段需要停顿线程，但耗时很短，而且是借用进行Minor GC的时候同步完成的，所以G1收集器在这个阶段实际并没有额外的停顿。</li>
-<li>并发标记（Concurrent Marking）：从GC Root开始对堆中对象进行可达性分析，递归扫描整个堆里的对象图，找出要回收的对象，这阶段耗时较长，但可与用户程序并发执行。当对象图扫描完成以后，还要重新处理SATB（原始快照）记录下的在并发时有引用变动的对象。</li>
-<li>最终标记（Final Marking）：对用户线程做另一个短暂的暂停，用于处理并发阶段结束后仍遗留下来的最后那少量的STAB记录。 </li>
-<li>筛选回收（Live Data Counting and Evacuation）：负责更新Region的统计数据，对各个Region的回收价值和成本进行排序，根据用户所期望的停顿时间来制定回收计划，可以自由选择任意多个Region构成回收集，然后把决定回收的那一部分Region的存活对象复制到空的Region中，在清理掉整个旧Region的全部空间。这里的操作设计到存活对象的移动，是必须暂停用户线程的，由多条收集器线程并行完成的。</li>
-</ol>
-]]></content>
-      <categories>
-        <category>jvm</category>
-      </categories>
-      <tags>
-        <tag>GC</tag>
-        <tag>java</tag>
-        <tag>内存分配</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>垃圾收集器与内存分配策略（1）</title>
     <url>/2020/01/25/%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%8E%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5%EF%BC%881%EF%BC%89/</url>
     <content><![CDATA[<p><strong>深入理解Java虚拟机第三章内容记录之一</strong></p>
@@ -4170,6 +4275,47 @@ Process finished with exit code 0</code></pre>]]></content>
 <h3 id="并发的可达性分析"><a href="#并发的可达性分析" class="headerlink" title="并发的可达性分析"></a>并发的可达性分析</h3><p>在并发的可达性分析中，如果把原本存活的对象错误标记为已消亡，就会发生对象消失问题。为了解决对象消失问题，我们可以采用增量更新（Incremental Update）和原始快照（Snapshot At The Beginning）。</p>
 <p>增量更新是在当黑色对象（已被扫描过的且安全存活的对象）插入新的指向白色对象（尚未被垃圾收集器访问过的对象）的引用关系时，就将这个新插入的引用记录下来，等并发扫描结束之后，再将这些记录过的引用关系中的黑色对象为根，重新扫描一次。</p>
 <p>原始快照是当灰色对象（已访问过，但未完全扫描的对象）要删除指向白色对象的引用关系时，就将这个要删除的引用记录下来，在并发扫描结束之后，再将这些记录过的引用关系中的灰色对象为根，重新扫描一次。</p>
+]]></content>
+      <categories>
+        <category>jvm</category>
+      </categories>
+      <tags>
+        <tag>GC</tag>
+        <tag>java</tag>
+        <tag>内存分配</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>垃圾收集器与内存分配策略（2）</title>
+    <url>/2020/01/25/%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%8E%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5%EF%BC%882%EF%BC%89/</url>
+    <content><![CDATA[<p><strong>深入理解Java虚拟机第三章内容记录之二</strong></p>
+<a id="more"></a>
+
+<h2 id="经典垃圾收集器"><a href="#经典垃圾收集器" class="headerlink" title="经典垃圾收集器"></a>经典垃圾收集器</h2><h3 id="Serial收集器"><a href="#Serial收集器" class="headerlink" title="Serial收集器"></a>Serial收集器</h3><p>Serial收集器是一个单线程工作的收集器，但它的“单线程”的意义并不仅仅是说明它只会使用一个处理器或一条收集线程去完成工作，更重要的是强调在它进行垃圾收集时，必须暂停其他所有工作线程，直到它收集结束。其中Serial收集器采用复制算法暂停所有用户进程，Serial Old采取标记-整理算法暂停所有用户线程。</p>
+<p>迄今为止，Serial收集器仍然是HotSpot虚拟机运行在客户端模式下默认的新生代收集器，对于内存资源受限的环境，它是所有收集器里额外内存消耗最小的；对于单处理器或者处理器核心较少的环境来说，Serial收集器由于没有线程交互的开销，专心做垃圾收集可以获得最高的单线程收集效率。</p>
+<h3 id="ParNew收集器"><a href="#ParNew收集器" class="headerlink" title="ParNew收集器"></a>ParNew收集器</h3><p>ParNew收集器实质上是Serial收集器的多线程并行版本。</p>
+<p>由于CMS最为老年代垃圾收集器，而Parallel Scavenge无法与CMS配合工作，因此新生代只能选择Serial或者ParNew。</p>
+<h3 id="Parallel-Scavenge收集器"><a href="#Parallel-Scavenge收集器" class="headerlink" title="Parallel Scavenge收集器"></a>Parallel Scavenge收集器</h3><p>Parallel Scavenge也是一款新生代收集器，同样是基于标记-复制算法实现的收集器，同样能够并行。但是该收集器注重的是吞吐量（Throughput）。<br>$$<br>吞吐量=运行用户代码时间/(运行用户代码时间+运行垃圾收集时间)<br>$$<br>停顿时间越短就越适合需要与用户交互或需要保证服务响应质量的程序，良好的响应速度能提升用户体验；而高吞吐量则可以最高效率地利用处理器资源，尽快完成程序的运算任务，主要适合在后台运算而不需要太多交互的分析任务。</p>
+<p>Parallel Scavenge收集器提供了两个参数用于精确控制吞吐量，分别是控制最大垃圾收集停顿时间的-XX:MaxGCPauseMillis参数以及直接设置吞吐量大小的-XX:GCTimeRatio参数。</p>
+<h3 id="Serial-Old收集器"><a href="#Serial-Old收集器" class="headerlink" title="Serial Old收集器"></a>Serial Old收集器</h3><p>该收集器是Serial收集器的老年代版本，同样是单线程，使用标记-整理算法。主要意义是供客户端模式下的HotSpot虚拟机使用。</p>
+<h3 id="Parallel-Old收集器"><a href="#Parallel-Old收集器" class="headerlink" title="Parallel Old收集器"></a>Parallel Old收集器</h3><p>Parallel Old是Parallel Scavenge的老年代版本，支持多线程并发收集，基于标记-整理算法实现。</p>
+<h3 id="CMS"><a href="#CMS" class="headerlink" title="CMS"></a>CMS</h3><p>CMS（Concurrent Mark Sweep)收集器是一种以获取最短回收停顿时间为目标的收集器，是基于标记-清除算法实现的，它的运行过程可分为四个步骤，包括初始标记，并发标记，重新标记和并发清除。其中初始标记和重新标记仍然需要“Stop The World”。</p>
+<p>初始标记仅仅只是标记一下GC Roots能直接关联到的对象，速度很快；并发标记阶段就是从GC Roots的直接关联对象开始遍历整个对象图的过程，这个过程耗时较长，但是不需要停顿用户线程，可以与垃圾收集线程一起并发运行；而重新标记阶段则是为了修正并发标记期间，因用户程序继续运作而导致标记产生变动的那一部分对象的标记记录，这个阶段的停顿时间通常会比初始标记阶段稍长一些，但也远比并发标记阶段的时间短；最后是并发清除阶段，清理删除掉标记阶段判断的已经死亡的对象，由于不需要移动存活对象，所以这个阶段也是可以与用户线程同时并发的。</p>
+<p>CMS有以下三个明显的缺点：</p>
+<p>首先CMS收集器对处理器资源非常敏感。在并发阶段，它虽然不会导致用户线程停顿，但却会因为占用了一部分线程而导致应用程序变慢，降低总吞吐量。CMS默认启动的回收线程数是（处理器核心数量+3）/4.</p>
+<p>然后，由于CMS收集器无法处理“浮动垃圾”，有可能出现“Concurrent Mode Failure”失败进而导致另一次完全“Stop The World”的Full GC的产生。要是CMS运行期间预留的内存无法满足程序分配新对象的需要就会发生一次“并发失败”（Concurrent Mode Failure），这时候虚拟机将不得不启动后备方案：冻结用户线程的执行，临时启用Serial Old收集器来重新进行老年代的垃圾收集，但这样停顿时间就太长了。</p>
+<p>最后就是空间碎片的问题，如果老年代无法找到足够大的连续空间来分配当前对象，就又会触发Full GC。</p>
+<h3 id="Garbage-First收集器"><a href="#Garbage-First收集器" class="headerlink" title="Garbage First收集器"></a>Garbage First收集器</h3><p>G1是一款主要面向服务端应用的垃圾收集器，它可以面向堆内存任何部分来组成回收集（Collection Set）进行回收，衡量标准不再是它属于哪个分代，而是哪块内存中存放的垃圾数量最多，回收收益最大，这就是G1收集器的Mixed GC模式。</p>
+<p>G1开创的基于Region的堆内存布局是它能够实现这个目标的关键。G1不再坚持固定大小以及固定数量的分代区域划分，而是把连续的Java堆划分为多个大小相等的独立区域（Region），每一个Region都可以根据需要，扮演新生代的Eden空间、Survivor空间，或者老年代空间。收集器能够对扮演不同角色的Region采用不同的策略去处理。</p>
+<p>Region中还有一类特殊的Humongous区域，专门用来存储大对象。</p>
+<p>G1收集器的新生代和老年代不再是固定的，它们都是一系列区域的动态集合。G1收集器之所以能够建立可预测的停顿时间模型，是因为它将Region作为单次回收的最小单元，这样可以有计划地避免在整个Java堆中进行全区域的垃圾收集。更具体的思路是让G1收集器去跟踪各个Region里面的垃圾堆积的“价值”大小，价值即回收所获得的空间大小以及回收所需时间的经验值，然后在后台维护一个优先级列表，每次根据用户设定允许的收集停顿时间，优先处理回收价值收益最大的那些Region。</p>
+<p>G1收集器的运作过程大致可以划分为以下四个步骤：</p>
+<ol>
+<li>初始标记（Initial Marking）:仅仅只是标记一下GC Roots能直接关联到的对象，并且修改TAMS指针的值（Top at Mark Start，把Region中的一部分空间划分出来用于并发回收过程中的新对象分配，并发回收时新分配的对象地址必须要在这两个指针位置之上），让下一阶段用户线程并发运行时，能正确地在可用的Region中分配新对象。这个阶段需要停顿线程，但耗时很短，而且是借用进行Minor GC的时候同步完成的，所以G1收集器在这个阶段实际并没有额外的停顿。</li>
+<li>并发标记（Concurrent Marking）：从GC Root开始对堆中对象进行可达性分析，递归扫描整个堆里的对象图，找出要回收的对象，这阶段耗时较长，但可与用户程序并发执行。当对象图扫描完成以后，还要重新处理SATB（原始快照）记录下的在并发时有引用变动的对象。</li>
+<li>最终标记（Final Marking）：对用户线程做另一个短暂的暂停，用于处理并发阶段结束后仍遗留下来的最后那少量的STAB记录。 </li>
+<li>筛选回收（Live Data Counting and Evacuation）：负责更新Region的统计数据，对各个Region的回收价值和成本进行排序，根据用户所期望的停顿时间来制定回收计划，可以自由选择任意多个Region构成回收集，然后把决定回收的那一部分Region的存活对象复制到空的Region中，在清理掉整个旧Region的全部空间。这里的操作设计到存活对象的移动，是必须暂停用户线程的，由多条收集器线程并行完成的。</li>
+</ol>
 ]]></content>
       <categories>
         <category>jvm</category>
