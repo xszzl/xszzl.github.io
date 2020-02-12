@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-02-11T11:14:47.296Z</updated>
+  <updated>2020-02-12T12:32:42.411Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>牛客专栏-面试常考设计模式</title>
+    <link href="http://yoursite.com/2020/02/12/%E7%89%9B%E5%AE%A2%E4%B8%93%E6%A0%8F-%E9%9D%A2%E8%AF%95%E5%B8%B8%E8%80%83%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    <id>http://yoursite.com/2020/02/12/%E7%89%9B%E5%AE%A2%E4%B8%93%E6%A0%8F-%E9%9D%A2%E8%AF%95%E5%B8%B8%E8%80%83%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</id>
+    <published>2020-02-12T08:51:19.000Z</published>
+    <updated>2020-02-12T12:32:42.411Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;面试常考设计模式&quot;&gt;&lt;a href=&quot;#面试常考设计模式&quot; class=&quot;headerlink&quot; title=&quot;面试常考设计模式&quot;&gt;&lt;/a&gt;面试常考设计模式&lt;/h2&gt;&lt;h3 id=&quot;设计模式六大原则&quot;&gt;&lt;a href=&quot;#设计模式六大原则&quot; class=&quot;headerlink&quot; title=&quot;设计模式六大原则&quot;&gt;&lt;/a&gt;设计模式六大原则&lt;/h3&gt;
+    
+    </summary>
+    
+    
+      <category term="牛客专栏" scheme="http://yoursite.com/categories/%E7%89%9B%E5%AE%A2%E4%B8%93%E6%A0%8F/"/>
+    
+    
+      <category term="设计模式" scheme="http://yoursite.com/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+  </entry>
   
   <entry>
     <title>牛客专栏-高频面试算法-排序</title>
@@ -425,30 +446,6 @@
     
     
       <category term="单调栈" scheme="http://yoursite.com/tags/%E5%8D%95%E8%B0%83%E6%A0%88/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>算法-生成滑动窗口的最大值数组</title>
-    <link href="http://yoursite.com/2020/02/03/%E7%AE%97%E6%B3%95-%E7%94%9F%E6%88%90%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E7%9A%84%E6%9C%80%E5%A4%A7%E5%80%BC%E6%95%B0%E7%BB%84/"/>
-    <id>http://yoursite.com/2020/02/03/%E7%AE%97%E6%B3%95-%E7%94%9F%E6%88%90%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E7%9A%84%E6%9C%80%E5%A4%A7%E5%80%BC%E6%95%B0%E7%BB%84/</id>
-    <published>2020-02-03T13:08:07.000Z</published>
-    <updated>2020-02-03T14:24:23.283Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;题目&quot;&gt;&lt;a href=&quot;#题目&quot; class=&quot;headerlink&quot; title=&quot;题目&quot;&gt;&lt;/a&gt;题目&lt;/h3&gt;&lt;p&gt;有一个整型数组arr和一个大小为w的窗口从数组的最左边滑到最右边，窗口每次向右边滑一个位置。&lt;/p&gt;
-&lt;p&gt;如果数组长度为n，窗口大小为w，则一共产生n-w+1个窗口的最大值。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="算法和数据结构" scheme="http://yoursite.com/categories/%E7%AE%97%E6%B3%95%E5%92%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
-    
-    
-      <category term="滑动窗口" scheme="http://yoursite.com/tags/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/"/>
-    
-      <category term="双端队列" scheme="http://yoursite.com/tags/%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97/"/>
     
   </entry>
   
