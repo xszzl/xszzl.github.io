@@ -1,6 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>AQS</title>
+    <url>/2020/02/26/AQS/</url>
+    <content><![CDATA[<h2 id="AQS"><a href="#AQS" class="headerlink" title="AQS"></a>AQS</h2><p><img src="https://images2015.cnblogs.com/blog/721070/201705/721070-20170504110246211-10684485.png" alt="img"></p>
+<h3 id="节点状态waitStatus"><a href="#节点状态waitStatus" class="headerlink" title="节点状态waitStatus"></a>节点状态waitStatus</h3><ul>
+<li><strong>CANCELLED</strong>(1)：表示当前结点已取消调度。当timeout或被中断（响应中断的情况下），会触发变更为此状态，进入该状态后的结点将不会再变化。</li>
+<li><strong>SIGNAL</strong>(-1)：表示后继结点在等待当前结点唤醒。后继结点入队时，会将前继结点的状态更新为SIGNAL。</li>
+<li><strong>CONDITION</strong>(-2)：表示结点等待在Condition上，当其他线程调用了Condition的signal()方法后，CONDITION状态的结点将<strong>从等待队列转移到同步队列中</strong>，等待获取同步锁。</li>
+<li><strong>PROPAGATE</strong>(-3)：共享模式下，前继结点不仅会唤醒其后继结点，同时也可能会唤醒后继的后继结点。</li>
+<li><strong>0</strong>：新结点入队时的默认状态。</li>
+</ul>
+<h3 id="acquire"><a href="#acquire" class="headerlink" title="acquire"></a>acquire</h3><h4 id="acquire（int）"><a href="#acquire（int）" class="headerlink" title="acquire（int）"></a>acquire（int）</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">acquire</span><span class="params">(<span class="keyword">int</span> arg)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(!tryAcquire(arg) &amp;&amp;</span><br><span class="line">      acquireQueued(addWaiter(Node.EXCLUSIVE), arg))</span><br><span class="line">        selfInterrupt();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="tryAcquire-int"><a href="#tryAcquire-int" class="headerlink" title="tryAcquire(int)"></a>tryAcquire(int)</h4><p>尝试获取资源。如果获取成功，返回true，否则返回false</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">tryAcquire</span><span class="params">(<span class="keyword">int</span> arg)</span></span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="addWaiter-Node"><a href="#addWaiter-Node" class="headerlink" title="addWaiter(Node)"></a>addWaiter(Node)</h4><p>此方法用于将当前线程加入到等待队列的队尾，并返回当前线程所在的结点。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Node <span class="title">addWaiter</span><span class="params">(Node mode)</span></span>&#123;</span><br><span class="line">    <span class="comment">// 根据给定节点模式构造节点</span></span><br><span class="line">    Node node = <span class="keyword">new</span> Node(Thread.currentThread(), mode);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 尝试快速方式直接到队尾</span></span><br><span class="line">    Node pred = tail;</span><br><span class="line">    <span class="keyword">if</span>(pred != <span class="keyword">null</span>)&#123;</span><br><span class="line">        node.prev = pred;</span><br><span class="line">        <span class="keyword">if</span>(compareAndSetTail(pred, node)) &#123;</span><br><span class="line">            pred.next = node;</span><br><span class="line">            <span class="keyword">return</span> node;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 失败就通过enq入队</span></span><br><span class="line">    enq(node);</span><br><span class="line">    <span class="keyword">return</span> node;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="enq-Node"><a href="#enq-Node" class="headerlink" title="enq(Node)"></a>enq(Node)</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Node <span class="title">enq</span><span class="params">(<span class="keyword">final</span> Node node)</span></span>&#123;</span><br><span class="line">	<span class="comment">// CAS自旋</span></span><br><span class="line">    <span class="keyword">for</span>(;;)&#123;</span><br><span class="line">        Node t = tail;</span><br><span class="line">        <span class="keyword">if</span>(t == <span class="keyword">null</span>)&#123;	<span class="comment">// 队列为空，就创建一个头节点，tail也指向它</span></span><br><span class="line">            <span class="keyword">if</span>(compareAndSetHead(<span class="keyword">new</span> Node()))</span><br><span class="line">                tail = head;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            node.prev = t;</span><br><span class="line">            <span class="keyword">if</span>(compareAndSetTail(t, node))&#123;</span><br><span class="line">                t.next = node;</span><br><span class="line">                <span class="keyword">return</span> t;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="acquireQueued-Node-int"><a href="#acquireQueued-Node-int" class="headerlink" title="acquireQueued(Node, int)"></a>acquireQueued(Node, int)</h4><p>在等待队列中排队，直到被唤醒</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">acquireQueued</span><span class="params">(<span class="keyword">final</span> Node node, <span class="keyword">int</span> arg)</span></span>&#123;</span><br><span class="line">    <span class="keyword">boolean</span> failed = <span class="keyword">true</span>;	<span class="comment">// 标记是否成功拿到资源</span></span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        <span class="keyword">boolean</span> interrupted = <span class="keyword">false</span>;	<span class="comment">// 标记等待过程中是否被中断过</span></span><br><span class="line">        <span class="keyword">for</span>(;;)&#123;</span><br><span class="line">            <span class="keyword">final</span> Node p = node.predecessor();	<span class="comment">// 前驱节点</span></span><br><span class="line">            <span class="comment">// 如果前驱节点是头节点，则当前节点可以去尝试获取资源</span></span><br><span class="line">            <span class="keyword">if</span>(p == head &amp;&amp; tryAcquire(arg)) &#123;</span><br><span class="line">                setHead(node);	<span class="comment">// 拿到资源后将head指向该节点</span></span><br><span class="line">                p.next = <span class="keyword">null</span>;	<span class="comment">// 在setHead中已经将node.prev设置为null，此处将p.next设为null，GC就会回收p</span></span><br><span class="line">                failed = <span class="keyword">false</span>;	<span class="comment">// 成功获取资源</span></span><br><span class="line">                <span class="keyword">return</span> interrupted;	<span class="comment">// 返回等待过程中是否被中断过</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 如果要等待，则通过park()进入waiting状态，直到被unpark().如果期间被中断，就会从park()中醒过来，发现拿不到资源继续进入park()等待</span></span><br><span class="line">            <span class="keyword">if</span>(shouldParkAfterFailedAcquire(p, node) &amp;&amp;</span><br><span class="line">              parkAndCheckInterrupt())&#123;</span><br><span class="line">                interrupted = <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="comment">// 如果等待过程中没有成功获取到资源，如timeout，或者可中断情况下被中断了</span></span><br><span class="line">            <span class="keyword">if</span>(failed)</span><br><span class="line">                cancelAcquire(node);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="shouldParkAfterFailedAcquire-Node-Node"><a href="#shouldParkAfterFailedAcquire-Node-Node" class="headerlink" title="shouldParkAfterFailedAcquire(Node, Node)"></a>shouldParkAfterFailedAcquire(Node, Node)</h4><p>检查状态，判断是否需要进入waiting状态</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">shouldParkAfterFailedAcquire</span><span class="params">(Node pred, Node node)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ws = pred.waitStatus;</span><br><span class="line">    <span class="keyword">if</span>(ws == Node.SIGNAL)</span><br><span class="line">        <span class="comment">// 表示后继节点在等待自己唤醒</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    <span class="keyword">if</span>(ws &gt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="comment">// 如果前驱放弃了，那么一直往前</span></span><br><span class="line">        <span class="keyword">do</span> &#123;</span><br><span class="line">            node.prev = pred = pred.prev;</span><br><span class="line">        &#125; <span class="keyword">while</span>(pred.waitStatus &gt; <span class="number">0</span>);</span><br><span class="line">        pred.next = node;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 如果前驱正常就把前驱的状态设置为SIGNAL</span></span><br><span class="line">        compareAndSetWaitStatus(pred, ws, SIGNAL);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="parkAndCheckInterrupt"><a href="#parkAndCheckInterrupt" class="headerlink" title="parkAndCheckInterrupt()"></a>parkAndCheckInterrupt()</h4><p>此方法就是让线程去休息，真正进入等待状态</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">parkAndCheckInterrupt</span><span class="params">()</span></span>&#123;</span><br><span class="line">    LockSupport.park(<span class="keyword">this</span>);	<span class="comment">// 调用park()进入waiting状态</span></span><br><span class="line">    <span class="keyword">return</span> Thread.interrupted();	<span class="comment">// 如果被唤醒查看自己是不是被中断的</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="release"><a href="#release" class="headerlink" title="release"></a>release</h3><h4 id="release-int"><a href="#release-int" class="headerlink" title="release(int)"></a>release(int)</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">release</span><span class="params">(<span class="keyword">int</span> arg)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(tryRelease(arg)) &#123;</span><br><span class="line">        Node h = head;</span><br><span class="line">        <span class="keyword">if</span>(h != <span class="keyword">null</span> &amp;&amp; h.waitStatus != <span class="number">0</span>)</span><br><span class="line">            unparkSuccessor(h);	<span class="comment">// 唤醒后继节点</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="tryRelease-int"><a href="#tryRelease-int" class="headerlink" title="tryRelease(int)"></a>tryRelease(int)</h4><p>此方法尝试去释放定量的资源</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">tryRelease</span><span class="params">(<span class="keyword">int</span> arg)</span></span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> UnSupportedOperationException();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="unparkSuccessor-Node"><a href="#unparkSuccessor-Node" class="headerlink" title="unparkSuccessor(Node)"></a>unparkSuccessor(Node)</h4><p>此方法用于唤醒等待队列中的下一个线程</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">unparkSuccessor</span><span class="params">(Node node)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ws = node.waitStatus;</span><br><span class="line">    <span class="keyword">if</span>(ws &lt; <span class="number">0</span>)	<span class="comment">// 置零当前线程所在的结点状态，允许失败</span></span><br><span class="line">        compareAndSetWaitStatus(node, ws, <span class="number">0</span>);</span><br><span class="line">    Node s = node.next;</span><br><span class="line">    <span class="keyword">if</span>(s == <span class="keyword">null</span> || s.waitStatus &gt; <span class="number">0</span>)&#123;	<span class="comment">// 如果后继节点为空或已取消</span></span><br><span class="line">        s = <span class="keyword">null</span>;</span><br><span class="line">        <span class="comment">// 从后向前找到有效的节点</span></span><br><span class="line">        <span class="keyword">for</span>(Node t = tail; t != <span class="keyword">null</span> &amp;&amp; t != node; t = t.prev)&#123;</span><br><span class="line">            <span class="keyword">if</span>(t.waitStatus &lt;= <span class="number">0</span>)</span><br><span class="line">                s = t;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(s != <span class="keyword">null</span>)</span><br><span class="line">        LockSupport.unpark(s.thread);	<span class="comment">//唤醒</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="acquireShared-int"><a href="#acquireShared-int" class="headerlink" title="acquireShared(int)"></a>acquireShared(int)</h3><h4 id="acquireShared-int-1"><a href="#acquireShared-int-1" class="headerlink" title="acquireShared(int)"></a>acquireShared(int)</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">acquireShared</span><span class="params">(<span class="keyword">int</span> arg)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(tryAcquireShared(arg) &lt; <span class="number">0</span>)</span><br><span class="line">        doAcquireShared(arg);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="doAcquireShared-int"><a href="#doAcquireShared-int" class="headerlink" title="doAcquireShared(int)"></a>doAcquireShared(int)</h4><p>此方法用于将当前线程加入等待队列尾部休息，直到其他线程释放资源唤醒自己，自己成功拿到相应量的资源后才返回</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">doAcquireShared</span><span class="params">(<span class="keyword">int</span> arg)</span></span>&#123;</span><br><span class="line">    <span class="keyword">final</span> Node node = addWaiter(Node.SHARE);</span><br><span class="line">    <span class="keyword">boolean</span> failed = <span class="keyword">true</span>;</span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        <span class="keyword">boolean</span> interrupted = <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">for</span>(;;)&#123;</span><br><span class="line">            <span class="keyword">final</span> Node p = node.predecessor();</span><br><span class="line">            <span class="keyword">if</span>(p == head)&#123;</span><br><span class="line">                <span class="keyword">int</span> r = tryAcquireShared(arg);</span><br><span class="line">                <span class="keyword">if</span>(r &gt;= <span class="number">0</span>)&#123;</span><br><span class="line">                    <span class="comment">// 将head指向自己，如果还有剩余的资源可以再唤醒之后的线程</span></span><br><span class="line">                    setHeadAndPropagate(node, r);</span><br><span class="line">                   	p.next = <span class="keyword">null</span>;</span><br><span class="line">                    <span class="keyword">if</span>(interrupted)</span><br><span class="line">                        selfInterrupt();</span><br><span class="line">                    failed = <span class="keyword">false</span>;</span><br><span class="line">                    <span class="keyword">return</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span>(shouldParkAfterFailedAcquire(p, node) &amp;&amp;</span><br><span class="line">              parkAndCheckInterrupt())</span><br><span class="line">                interrupted = <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(failed)</span><br><span class="line">            cancelAcquire(node);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="setHeadAndPropagate-Node-int"><a href="#setHeadAndPropagate-Node-int" class="headerlink" title="setHeadAndPropagate(Node, int)"></a>setHeadAndPropagate(Node, int)</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setHeadAndPropagate</span><span class="params">(Node node, <span class="keyword">int</span> propagate)</span></span>&#123;</span><br><span class="line">    Node h = head;</span><br><span class="line">    setHead(node);</span><br><span class="line">    <span class="keyword">if</span>(propagate &gt; <span class="number">0</span> || h == <span class="keyword">null</span> || h.waitStatus &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        Node s = node.next;</span><br><span class="line">        <span class="keyword">if</span>(s == <span class="keyword">null</span> || s.isShared())</span><br><span class="line">            doReleaseShared();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="releaseShared"><a href="#releaseShared" class="headerlink" title="releaseShared"></a>releaseShared</h3><h4 id="releaseShared-1"><a href="#releaseShared-1" class="headerlink" title="releaseShared()"></a>releaseShared()</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">releaseShared</span><span class="params">(<span class="keyword">int</span> arg)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(tryReleaseShared(arg))&#123;</span><br><span class="line">        doReleaseShared();</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="doReleaseShared"><a href="#doReleaseShared" class="headerlink" title="doReleaseShared()"></a>doReleaseShared()</h4><p>此方法主要用于唤醒后继节点</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">doReleaseShared</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(;;)&#123;</span><br><span class="line">        Node h = head;</span><br><span class="line">        <span class="keyword">if</span>(h != <span class="keyword">null</span> &amp;&amp; h != tail)&#123;</span><br><span class="line">            <span class="keyword">int</span> ws = h.waitStatus;</span><br><span class="line">            <span class="keyword">if</span>(ws == Node.SIGNAL)&#123;</span><br><span class="line">                <span class="keyword">if</span>(!compareAndSetWaitStatus(h, Node.SIGNAL, <span class="number">0</span>))</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                unparkSuccessor(h);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span>(ws == <span class="number">0</span> &amp;&amp;</span><br><span class="line">                     !compareAndSetWaitStatus(h, <span class="number">0</span>, Node.PROPAGATE))</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(h == head)	<span class="comment">// head发生变化</span></span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="简单应用"><a href="#简单应用" class="headerlink" title="简单应用"></a>简单应用</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Mutex</span> <span class="keyword">implements</span> <span class="title">Lock</span>, <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span></span>&#123;</span><br><span class="line">    <span class="comment">// 定义同步器</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Sync</span> <span class="title">entends</span> <span class="title">AbstarctQueuedSynchronizer</span></span>&#123;</span><br><span class="line">        <span class="comment">// 判断是否锁定状态</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">isHeldExclusively</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="comment">// return getState() == 1;</span></span><br><span class="line">            <span class="keyword">return</span> getExclusiveOwnerThread() == Thread.currentThread();</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 尝试获取资源，立即返回</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">tryAcquire</span><span class="params">(<span class="keyword">int</span> acquires)</span></span>&#123;</span><br><span class="line">            <span class="keyword">assert</span> acquires == <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span>(compareAndSetStatus(<span class="number">0</span>, <span class="number">1</span>))&#123;</span><br><span class="line">                setExclusiveOwnerThread(Thread.currentThread());</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 尝试释放资源</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">tryRelease</span><span class="params">(<span class="keyword">int</span> releases)</span></span>&#123;</span><br><span class="line">            <span class="keyword">assert</span> releases == <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span>(getStatus() == <span class="number">0</span>)</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> IllegalMonitorStateException();</span><br><span class="line">            setExclusiveOwnerThread(<span class="keyword">null</span>);</span><br><span class="line">            setStatus(<span class="number">0</span>);</span><br><span class="line">            <span class="keyword">return</span> ture;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Sync sync = <span class="keyword">new</span> Sync();</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span></span>&#123;</span><br><span class="line">        sync.accquire(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">tryLock</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sync.tryAcquire(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">unlock</span><span class="params">()</span></span>&#123;</span><br><span class="line">        sync.release(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isLocked</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sync.isHeldExclusively();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
+  <entry>
     <title>自我介绍及面试问题</title>
     <url>/2020/02/24/%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D%E5%8F%8A%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<h4 id="Redis用来做什么了"><a href="#Redis用来做什么了" class="headerlink" title="Redis用来做什么了"></a>Redis用来做什么了</h4><p>在项目中redis我用来做存储和缓存，具体来说就是用redis代替session来存储验证码，然后用redis存储id到用户和登录凭证的映射，减少数据库的访问，然后对于频率比较高的操作比如点赞也用redis存储，还使用redis来存储了UV和活跃用户来做统计，其他一些数据库不太好存储的比如关注，粉丝这些适合非关系型数据库存储的内容也用redis存储</p>
@@ -144,7 +198,63 @@
 <li>弱引用，下一次GC会被回收</li>
 <li>虚引用，只是为了在被回收时能收到一个系统通知</li>
 </ul>
-<h2 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h2>]]></content>
+<h2 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h2><h3 id="问题1-Spring-IOC理解以及实现原理"><a href="#问题1-Spring-IOC理解以及实现原理" class="headerlink" title="问题1 Spring IOC理解以及实现原理"></a>问题1 Spring IOC理解以及实现原理</h3><p>IOC也叫控制反转,DI叫依赖注入，是对IOC更简单的诠释。</p>
+<p>控制反转也就是把传统上的由程序代码直接操控的对象的调用权交给容器，通过容器来实现对象组件的装配和管理。DI即组件之间的依赖关系由容器在运行期决定，由容器动态地将某种依赖关系注入到组件之中。</p>
+<p><strong>实现原理</strong>是通过反射创建实例；获取需要注入的接口实现类并将其赋值给该接口</p>
+<h3 id="问题2-Spring-AOP理解以及实现原理"><a href="#问题2-Spring-AOP理解以及实现原理" class="headerlink" title="问题2 Spring AOP理解以及实现原理"></a>问题2 Spring AOP理解以及实现原理</h3><p>AOP即面向切面编程，是指当需要在某一个方法之前或者之后做一些额外的操作，可以利用AOP将功能代码从业务逻辑中分离出来。</p>
+<p>有几个重要的概念</p>
+<ul>
+<li>Joinpoint连接点，类里面可以被增强的方法</li>
+<li>Pointcut切入点，即需要被拦截的连接点</li>
+<li>Advice通知/增强，切入点要做的事情</li>
+<li>Aspect切面：切入点+增强</li>
+<li>Target目标：代理的目标对象，要增强的类</li>
+<li>Weaving织入：把advice应用到target的过程</li>
+<li>Proxy代理：一个类被AOP织入后，就产生一个结果代理类</li>
+</ul>
+<p><strong>实现原理</strong>：</p>
+<p>动态代理，包括JDK动态代理和cglib动态代理</p>
+<p>其中JDK代理只能代理实现了接口的类，原理是通过在运行期间创建一个接口的实现类来完成对目标对象的代理。具体过程是实现一个接口InvocationHandler的类，然后通过构造函数传入要被代理的对象，重写该类的invoke方法，在主函数中只要获得被代理类的类加载器，然后调用Proxy.newProxyInstance方法就可以产生一个代理类。</p>
+<p>cglib只要针对类实现代理，对是否实现接口没有要求。原理是对被代理的类生成一个子类，覆盖其中的方法。具体过程是定义一个实现了MethodInterceptor接口的类，实现其intercept()方法，在其中调用proxy.invokeSuper()。</p>
+<h3 id="问题3-IoC容器的加载过程"><a href="#问题3-IoC容器的加载过程" class="headerlink" title="问题3 IoC容器的加载过程"></a>问题3 IoC容器的加载过程</h3><ul>
+<li>Resource资源定位</li>
+<li>创建一个BeanFactory</li>
+<li>把读取配置信息的BeanDefinitionReader配置给BeanFactory</li>
+<li>通过BeanDefinitionReader来解析Resource定位的资源，把用户定义好的Bean表示成IOC容器的内部数据BeanDefinition</li>
+<li>将BeanDefinition保存到Map中完成注册</li>
+</ul>
+<h3 id="问题4-JDK动态代理与CGlib实现的区别"><a href="#问题4-JDK动态代理与CGlib实现的区别" class="headerlink" title="问题4 JDK动态代理与CGlib实现的区别"></a>问题4 JDK动态代理与CGlib实现的区别</h3><ul>
+<li>JDK动态代理只能对实现了接口的类生成代理，而不能针对类</li>
+<li>CGLIB是针对类实现代理，主要是对指定的类生成一个子类，覆盖其中的方法，因为是继承所以父类不要声明为final</li>
+<li>JDK代理不需要第三方库,CGlib必须依赖于CGLib的类库</li>
+</ul>
+<h3 id="问题5-Spring-MVC的原理"><a href="#问题5-Spring-MVC的原理" class="headerlink" title="问题5 Spring MVC的原理"></a>问题5 Spring MVC的原理</h3><ol>
+<li>客户端的所有请求都交给前端控制器DispatcherServlet来处理，它会负责调用系统的其他模块来真正处理用户的请求。</li>
+<li>通过HandlerMapping找到映射</li>
+<li>使用对应的Adapter进行业务逻辑处理</li>
+<li>返回一个ModelAndView给DispatcherServlet</li>
+<li>DispatchServlet将ModelAndView交给ViewResolver处理</li>
+<li>ViewResolver生成一个View视图</li>
+<li>DispatcherServlet要用View对Model进行渲染</li>
+<li>客户端得到响应结果</li>
+</ol>
+<h3 id="问题6-BeanFactory和FactoryBean的区别"><a href="#问题6-BeanFactory和FactoryBean的区别" class="headerlink" title="问题6 BeanFactory和FactoryBean的区别"></a>问题6 BeanFactory和FactoryBean的区别</h3><p>BeanFactory是Bean工厂，是Spring IOC容器的最顶层接口，它的作用是管理Bean，即实例化、定位、配置应用程序中的对象以及建立这些对象间的依赖。</p>
+<p>FactoryBean是一个Bean，作用是产生其他Bean实例，需要提供一个方法，该方法用来返回其他Bean实例。</p>
+<h3 id="问题7-BeanFactory和ApplicationContext的区别"><a href="#问题7-BeanFactory和ApplicationContext的区别" class="headerlink" title="问题7 BeanFactory和ApplicationContext的区别"></a>问题7 BeanFactory和ApplicationContext的区别</h3><p>BeanFactory是Spring最顶层的接口，ApplicationContext接口是BeanFactory的派生，丰富了BeanFactory接口的功能。</p>
+<p>其次，BeanFactory采用的是延迟加载形式来注入Bean，而ApplicationContext则是在容器启动的时候一次性创建了所有的Bean。因此BeanFactory启动的时候占用资源少，但是在启动时无法检查配置问题，而ApplicationContext则启动较慢，占用内存大，但是可以发现配置中的问题，同时应用程序运行较快。</p>
+<h3 id="问题8-Spring中Bean的作用域有哪几种"><a href="#问题8-Spring中Bean的作用域有哪几种" class="headerlink" title="问题8 Spring中Bean的作用域有哪几种"></a>问题8 Spring中Bean的作用域有哪几种</h3><ul>
+<li>singleton：Bean在每个Spring IOC容器中只有一个实例，默认作用域</li>
+<li>prototype：每个Bean可以有多个实例</li>
+<li>request：每次http请求都会创建一个Bean</li>
+<li>session：在一个HTTP Session中，一个Bean对应一个实例</li>
+<li>global-session：在一个全局的HTTP Session中，一个Bean对应一个实例。</li>
+</ul>
+<p><strong>一般只有无状态的Bean才能在多个线程环境下共享</strong></p>
+<h3 id="问题9-Spring的事务"><a href="#问题9-Spring的事务" class="headerlink" title="问题9 Spring的事务"></a>问题9 Spring的事务</h3><ul>
+<li>编程式事务：通过TransactionTemplate实现</li>
+<li>声明式事务：建立在AOP之上。其本质是通过AOP功能，对方法前后进行拦截，将事务处理的功能编制到拦截的方法中</li>
+</ul>
+]]></content>
       <categories>
         <category>面经</category>
       </categories>
@@ -5014,47 +5124,6 @@ Process finished with exit code 0</code></pre>]]></content>
       </tags>
   </entry>
   <entry>
-    <title>垃圾收集器与内存分配策略（2）</title>
-    <url>/2020/01/25/%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%8E%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5%EF%BC%882%EF%BC%89/</url>
-    <content><![CDATA[<p><strong>深入理解Java虚拟机第三章内容记录之二</strong></p>
-<a id="more"></a>
-
-<h2 id="经典垃圾收集器"><a href="#经典垃圾收集器" class="headerlink" title="经典垃圾收集器"></a>经典垃圾收集器</h2><h3 id="Serial收集器"><a href="#Serial收集器" class="headerlink" title="Serial收集器"></a>Serial收集器</h3><p>Serial收集器是一个单线程工作的收集器，但它的“单线程”的意义并不仅仅是说明它只会使用一个处理器或一条收集线程去完成工作，更重要的是强调在它进行垃圾收集时，必须暂停其他所有工作线程，直到它收集结束。其中Serial收集器采用复制算法暂停所有用户进程，Serial Old采取标记-整理算法暂停所有用户线程。</p>
-<p>迄今为止，Serial收集器仍然是HotSpot虚拟机运行在客户端模式下默认的新生代收集器，对于内存资源受限的环境，它是所有收集器里额外内存消耗最小的；对于单处理器或者处理器核心较少的环境来说，Serial收集器由于没有线程交互的开销，专心做垃圾收集可以获得最高的单线程收集效率。</p>
-<h3 id="ParNew收集器"><a href="#ParNew收集器" class="headerlink" title="ParNew收集器"></a>ParNew收集器</h3><p>ParNew收集器实质上是Serial收集器的多线程并行版本。</p>
-<p>由于CMS最为老年代垃圾收集器，而Parallel Scavenge无法与CMS配合工作，因此新生代只能选择Serial或者ParNew。</p>
-<h3 id="Parallel-Scavenge收集器"><a href="#Parallel-Scavenge收集器" class="headerlink" title="Parallel Scavenge收集器"></a>Parallel Scavenge收集器</h3><p>Parallel Scavenge也是一款新生代收集器，同样是基于标记-复制算法实现的收集器，同样能够并行。但是该收集器注重的是吞吐量（Throughput）。<br>$$<br>吞吐量=运行用户代码时间/(运行用户代码时间+运行垃圾收集时间)<br>$$<br>停顿时间越短就越适合需要与用户交互或需要保证服务响应质量的程序，良好的响应速度能提升用户体验；而高吞吐量则可以最高效率地利用处理器资源，尽快完成程序的运算任务，主要适合在后台运算而不需要太多交互的分析任务。</p>
-<p>Parallel Scavenge收集器提供了两个参数用于精确控制吞吐量，分别是控制最大垃圾收集停顿时间的-XX:MaxGCPauseMillis参数以及直接设置吞吐量大小的-XX:GCTimeRatio参数。</p>
-<h3 id="Serial-Old收集器"><a href="#Serial-Old收集器" class="headerlink" title="Serial Old收集器"></a>Serial Old收集器</h3><p>该收集器是Serial收集器的老年代版本，同样是单线程，使用标记-整理算法。主要意义是供客户端模式下的HotSpot虚拟机使用。</p>
-<h3 id="Parallel-Old收集器"><a href="#Parallel-Old收集器" class="headerlink" title="Parallel Old收集器"></a>Parallel Old收集器</h3><p>Parallel Old是Parallel Scavenge的老年代版本，支持多线程并发收集，基于标记-整理算法实现。</p>
-<h3 id="CMS"><a href="#CMS" class="headerlink" title="CMS"></a>CMS</h3><p>CMS（Concurrent Mark Sweep)收集器是一种以获取最短回收停顿时间为目标的收集器，是基于标记-清除算法实现的，它的运行过程可分为四个步骤，包括初始标记，并发标记，重新标记和并发清除。其中初始标记和重新标记仍然需要“Stop The World”。</p>
-<p>初始标记仅仅只是标记一下GC Roots能直接关联到的对象，速度很快；并发标记阶段就是从GC Roots的直接关联对象开始遍历整个对象图的过程，这个过程耗时较长，但是不需要停顿用户线程，可以与垃圾收集线程一起并发运行；而重新标记阶段则是为了修正并发标记期间，因用户程序继续运作而导致标记产生变动的那一部分对象的标记记录，这个阶段的停顿时间通常会比初始标记阶段稍长一些，但也远比并发标记阶段的时间短；最后是并发清除阶段，清理删除掉标记阶段判断的已经死亡的对象，由于不需要移动存活对象，所以这个阶段也是可以与用户线程同时并发的。</p>
-<p>CMS有以下三个明显的缺点：</p>
-<p>首先CMS收集器对处理器资源非常敏感。在并发阶段，它虽然不会导致用户线程停顿，但却会因为占用了一部分线程而导致应用程序变慢，降低总吞吐量。CMS默认启动的回收线程数是（处理器核心数量+3）/4.</p>
-<p>然后，由于CMS收集器无法处理“浮动垃圾”，有可能出现“Concurrent Mode Failure”失败进而导致另一次完全“Stop The World”的Full GC的产生。要是CMS运行期间预留的内存无法满足程序分配新对象的需要就会发生一次“并发失败”（Concurrent Mode Failure），这时候虚拟机将不得不启动后备方案：冻结用户线程的执行，临时启用Serial Old收集器来重新进行老年代的垃圾收集，但这样停顿时间就太长了。</p>
-<p>最后就是空间碎片的问题，如果老年代无法找到足够大的连续空间来分配当前对象，就又会触发Full GC。</p>
-<h3 id="Garbage-First收集器"><a href="#Garbage-First收集器" class="headerlink" title="Garbage First收集器"></a>Garbage First收集器</h3><p>G1是一款主要面向服务端应用的垃圾收集器，它可以面向堆内存任何部分来组成回收集（Collection Set）进行回收，衡量标准不再是它属于哪个分代，而是哪块内存中存放的垃圾数量最多，回收收益最大，这就是G1收集器的Mixed GC模式。</p>
-<p>G1开创的基于Region的堆内存布局是它能够实现这个目标的关键。G1不再坚持固定大小以及固定数量的分代区域划分，而是把连续的Java堆划分为多个大小相等的独立区域（Region），每一个Region都可以根据需要，扮演新生代的Eden空间、Survivor空间，或者老年代空间。收集器能够对扮演不同角色的Region采用不同的策略去处理。</p>
-<p>Region中还有一类特殊的Humongous区域，专门用来存储大对象。</p>
-<p>G1收集器的新生代和老年代不再是固定的，它们都是一系列区域的动态集合。G1收集器之所以能够建立可预测的停顿时间模型，是因为它将Region作为单次回收的最小单元，这样可以有计划地避免在整个Java堆中进行全区域的垃圾收集。更具体的思路是让G1收集器去跟踪各个Region里面的垃圾堆积的“价值”大小，价值即回收所获得的空间大小以及回收所需时间的经验值，然后在后台维护一个优先级列表，每次根据用户设定允许的收集停顿时间，优先处理回收价值收益最大的那些Region。</p>
-<p>G1收集器的运作过程大致可以划分为以下四个步骤：</p>
-<ol>
-<li>初始标记（Initial Marking）:仅仅只是标记一下GC Roots能直接关联到的对象，并且修改TAMS指针的值（Top at Mark Start，把Region中的一部分空间划分出来用于并发回收过程中的新对象分配，并发回收时新分配的对象地址必须要在这两个指针位置之上），让下一阶段用户线程并发运行时，能正确地在可用的Region中分配新对象。这个阶段需要停顿线程，但耗时很短，而且是借用进行Minor GC的时候同步完成的，所以G1收集器在这个阶段实际并没有额外的停顿。</li>
-<li>并发标记（Concurrent Marking）：从GC Root开始对堆中对象进行可达性分析，递归扫描整个堆里的对象图，找出要回收的对象，这阶段耗时较长，但可与用户程序并发执行。当对象图扫描完成以后，还要重新处理SATB（原始快照）记录下的在并发时有引用变动的对象。</li>
-<li>最终标记（Final Marking）：对用户线程做另一个短暂的暂停，用于处理并发阶段结束后仍遗留下来的最后那少量的STAB记录。 </li>
-<li>筛选回收（Live Data Counting and Evacuation）：负责更新Region的统计数据，对各个Region的回收价值和成本进行排序，根据用户所期望的停顿时间来制定回收计划，可以自由选择任意多个Region构成回收集，然后把决定回收的那一部分Region的存活对象复制到空的Region中，在清理掉整个旧Region的全部空间。这里的操作设计到存活对象的移动，是必须暂停用户线程的，由多条收集器线程并行完成的。</li>
-</ol>
-]]></content>
-      <categories>
-        <category>jvm</category>
-      </categories>
-      <tags>
-        <tag>GC</tag>
-        <tag>java</tag>
-        <tag>内存分配</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>垃圾收集器与内存分配策略（1）</title>
     <url>/2020/01/25/%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%8E%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5%EF%BC%881%EF%BC%89/</url>
     <content><![CDATA[<p><strong>深入理解Java虚拟机第三章内容记录之一</strong></p>
@@ -5148,6 +5217,47 @@ Process finished with exit code 0</code></pre>]]></content>
 <h3 id="并发的可达性分析"><a href="#并发的可达性分析" class="headerlink" title="并发的可达性分析"></a>并发的可达性分析</h3><p>在并发的可达性分析中，如果把原本存活的对象错误标记为已消亡，就会发生对象消失问题。为了解决对象消失问题，我们可以采用增量更新（Incremental Update）和原始快照（Snapshot At The Beginning）。</p>
 <p>增量更新是在当黑色对象（已被扫描过的且安全存活的对象）插入新的指向白色对象（尚未被垃圾收集器访问过的对象）的引用关系时，就将这个新插入的引用记录下来，等并发扫描结束之后，再将这些记录过的引用关系中的黑色对象为根，重新扫描一次。</p>
 <p>原始快照是当灰色对象（已访问过，但未完全扫描的对象）要删除指向白色对象的引用关系时，就将这个要删除的引用记录下来，在并发扫描结束之后，再将这些记录过的引用关系中的灰色对象为根，重新扫描一次。</p>
+]]></content>
+      <categories>
+        <category>jvm</category>
+      </categories>
+      <tags>
+        <tag>GC</tag>
+        <tag>java</tag>
+        <tag>内存分配</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>垃圾收集器与内存分配策略（2）</title>
+    <url>/2020/01/25/%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%8E%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5%EF%BC%882%EF%BC%89/</url>
+    <content><![CDATA[<p><strong>深入理解Java虚拟机第三章内容记录之二</strong></p>
+<a id="more"></a>
+
+<h2 id="经典垃圾收集器"><a href="#经典垃圾收集器" class="headerlink" title="经典垃圾收集器"></a>经典垃圾收集器</h2><h3 id="Serial收集器"><a href="#Serial收集器" class="headerlink" title="Serial收集器"></a>Serial收集器</h3><p>Serial收集器是一个单线程工作的收集器，但它的“单线程”的意义并不仅仅是说明它只会使用一个处理器或一条收集线程去完成工作，更重要的是强调在它进行垃圾收集时，必须暂停其他所有工作线程，直到它收集结束。其中Serial收集器采用复制算法暂停所有用户进程，Serial Old采取标记-整理算法暂停所有用户线程。</p>
+<p>迄今为止，Serial收集器仍然是HotSpot虚拟机运行在客户端模式下默认的新生代收集器，对于内存资源受限的环境，它是所有收集器里额外内存消耗最小的；对于单处理器或者处理器核心较少的环境来说，Serial收集器由于没有线程交互的开销，专心做垃圾收集可以获得最高的单线程收集效率。</p>
+<h3 id="ParNew收集器"><a href="#ParNew收集器" class="headerlink" title="ParNew收集器"></a>ParNew收集器</h3><p>ParNew收集器实质上是Serial收集器的多线程并行版本。</p>
+<p>由于CMS最为老年代垃圾收集器，而Parallel Scavenge无法与CMS配合工作，因此新生代只能选择Serial或者ParNew。</p>
+<h3 id="Parallel-Scavenge收集器"><a href="#Parallel-Scavenge收集器" class="headerlink" title="Parallel Scavenge收集器"></a>Parallel Scavenge收集器</h3><p>Parallel Scavenge也是一款新生代收集器，同样是基于标记-复制算法实现的收集器，同样能够并行。但是该收集器注重的是吞吐量（Throughput）。<br>$$<br>吞吐量=运行用户代码时间/(运行用户代码时间+运行垃圾收集时间)<br>$$<br>停顿时间越短就越适合需要与用户交互或需要保证服务响应质量的程序，良好的响应速度能提升用户体验；而高吞吐量则可以最高效率地利用处理器资源，尽快完成程序的运算任务，主要适合在后台运算而不需要太多交互的分析任务。</p>
+<p>Parallel Scavenge收集器提供了两个参数用于精确控制吞吐量，分别是控制最大垃圾收集停顿时间的-XX:MaxGCPauseMillis参数以及直接设置吞吐量大小的-XX:GCTimeRatio参数。</p>
+<h3 id="Serial-Old收集器"><a href="#Serial-Old收集器" class="headerlink" title="Serial Old收集器"></a>Serial Old收集器</h3><p>该收集器是Serial收集器的老年代版本，同样是单线程，使用标记-整理算法。主要意义是供客户端模式下的HotSpot虚拟机使用。</p>
+<h3 id="Parallel-Old收集器"><a href="#Parallel-Old收集器" class="headerlink" title="Parallel Old收集器"></a>Parallel Old收集器</h3><p>Parallel Old是Parallel Scavenge的老年代版本，支持多线程并发收集，基于标记-整理算法实现。</p>
+<h3 id="CMS"><a href="#CMS" class="headerlink" title="CMS"></a>CMS</h3><p>CMS（Concurrent Mark Sweep)收集器是一种以获取最短回收停顿时间为目标的收集器，是基于标记-清除算法实现的，它的运行过程可分为四个步骤，包括初始标记，并发标记，重新标记和并发清除。其中初始标记和重新标记仍然需要“Stop The World”。</p>
+<p>初始标记仅仅只是标记一下GC Roots能直接关联到的对象，速度很快；并发标记阶段就是从GC Roots的直接关联对象开始遍历整个对象图的过程，这个过程耗时较长，但是不需要停顿用户线程，可以与垃圾收集线程一起并发运行；而重新标记阶段则是为了修正并发标记期间，因用户程序继续运作而导致标记产生变动的那一部分对象的标记记录，这个阶段的停顿时间通常会比初始标记阶段稍长一些，但也远比并发标记阶段的时间短；最后是并发清除阶段，清理删除掉标记阶段判断的已经死亡的对象，由于不需要移动存活对象，所以这个阶段也是可以与用户线程同时并发的。</p>
+<p>CMS有以下三个明显的缺点：</p>
+<p>首先CMS收集器对处理器资源非常敏感。在并发阶段，它虽然不会导致用户线程停顿，但却会因为占用了一部分线程而导致应用程序变慢，降低总吞吐量。CMS默认启动的回收线程数是（处理器核心数量+3）/4.</p>
+<p>然后，由于CMS收集器无法处理“浮动垃圾”，有可能出现“Concurrent Mode Failure”失败进而导致另一次完全“Stop The World”的Full GC的产生。要是CMS运行期间预留的内存无法满足程序分配新对象的需要就会发生一次“并发失败”（Concurrent Mode Failure），这时候虚拟机将不得不启动后备方案：冻结用户线程的执行，临时启用Serial Old收集器来重新进行老年代的垃圾收集，但这样停顿时间就太长了。</p>
+<p>最后就是空间碎片的问题，如果老年代无法找到足够大的连续空间来分配当前对象，就又会触发Full GC。</p>
+<h3 id="Garbage-First收集器"><a href="#Garbage-First收集器" class="headerlink" title="Garbage First收集器"></a>Garbage First收集器</h3><p>G1是一款主要面向服务端应用的垃圾收集器，它可以面向堆内存任何部分来组成回收集（Collection Set）进行回收，衡量标准不再是它属于哪个分代，而是哪块内存中存放的垃圾数量最多，回收收益最大，这就是G1收集器的Mixed GC模式。</p>
+<p>G1开创的基于Region的堆内存布局是它能够实现这个目标的关键。G1不再坚持固定大小以及固定数量的分代区域划分，而是把连续的Java堆划分为多个大小相等的独立区域（Region），每一个Region都可以根据需要，扮演新生代的Eden空间、Survivor空间，或者老年代空间。收集器能够对扮演不同角色的Region采用不同的策略去处理。</p>
+<p>Region中还有一类特殊的Humongous区域，专门用来存储大对象。</p>
+<p>G1收集器的新生代和老年代不再是固定的，它们都是一系列区域的动态集合。G1收集器之所以能够建立可预测的停顿时间模型，是因为它将Region作为单次回收的最小单元，这样可以有计划地避免在整个Java堆中进行全区域的垃圾收集。更具体的思路是让G1收集器去跟踪各个Region里面的垃圾堆积的“价值”大小，价值即回收所获得的空间大小以及回收所需时间的经验值，然后在后台维护一个优先级列表，每次根据用户设定允许的收集停顿时间，优先处理回收价值收益最大的那些Region。</p>
+<p>G1收集器的运作过程大致可以划分为以下四个步骤：</p>
+<ol>
+<li>初始标记（Initial Marking）:仅仅只是标记一下GC Roots能直接关联到的对象，并且修改TAMS指针的值（Top at Mark Start，把Region中的一部分空间划分出来用于并发回收过程中的新对象分配，并发回收时新分配的对象地址必须要在这两个指针位置之上），让下一阶段用户线程并发运行时，能正确地在可用的Region中分配新对象。这个阶段需要停顿线程，但耗时很短，而且是借用进行Minor GC的时候同步完成的，所以G1收集器在这个阶段实际并没有额外的停顿。</li>
+<li>并发标记（Concurrent Marking）：从GC Root开始对堆中对象进行可达性分析，递归扫描整个堆里的对象图，找出要回收的对象，这阶段耗时较长，但可与用户程序并发执行。当对象图扫描完成以后，还要重新处理SATB（原始快照）记录下的在并发时有引用变动的对象。</li>
+<li>最终标记（Final Marking）：对用户线程做另一个短暂的暂停，用于处理并发阶段结束后仍遗留下来的最后那少量的STAB记录。 </li>
+<li>筛选回收（Live Data Counting and Evacuation）：负责更新Region的统计数据，对各个Region的回收价值和成本进行排序，根据用户所期望的停顿时间来制定回收计划，可以自由选择任意多个Region构成回收集，然后把决定回收的那一部分Region的存活对象复制到空的Region中，在清理掉整个旧Region的全部空间。这里的操作设计到存活对象的移动，是必须暂停用户线程的，由多条收集器线程并行完成的。</li>
+</ol>
 ]]></content>
       <categories>
         <category>jvm</category>
