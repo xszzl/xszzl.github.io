@@ -18,6 +18,37 @@
       </categories>
   </entry>
   <entry>
+    <title>面经补充</title>
+    <url>/2020/02/25/%E8%A1%A5%E5%85%85/</url>
+    <content><![CDATA[<h3 id="先行发生原则happens-before"><a href="#先行发生原则happens-before" class="headerlink" title="先行发生原则happens-before"></a>先行发生原则happens-before</h3><ul>
+<li><strong>程序次序规则</strong>：在<strong>一个线程</strong>内，按照<strong>控制流</strong>顺序，书写在前面的操作先行发生于书写在后面的操作</li>
+<li><strong>管程锁定规则</strong>：一个unlock操作先行发生于后面对同一个锁的lock操作</li>
+<li><strong>volatile变量规则</strong>：对一个volatile变量的写操作先行发生于后面对这个变量的读操作</li>
+<li><strong>线程启动规则</strong>：Thread对象的start()方法先行发生于此线程的每一个动作</li>
+<li><strong>线程终止规则</strong>：线程中的所有操作都先行发生于对此线程的终止检测</li>
+<li><strong>线程中断规则</strong>：对线程interrupt()方法的调用先行发生于被中断线程的代码检测到中断事件的发生</li>
+<li><strong>对象终结规则</strong>：一个对象的初始化完成先行发生于它的finalize()方法的开始</li>
+<li><strong>传递性</strong>：如果操作A先行发生于操作B，操作B先行发生于操作C，那么操作A先行发生于操作C</li>
+</ul>
+<h3 id="Java线程的状态"><a href="#Java线程的状态" class="headerlink" title="Java线程的状态"></a>Java线程的状态</h3><ul>
+<li>新建New</li>
+<li>运行Runnable，包括Running和Ready</li>
+<li>无限期等待Waiting</li>
+<li>限期等待Timed Waiting</li>
+<li>阻塞Blocked，等待获取一个排他锁</li>
+<li>结束Terminated</li>
+</ul>
+<h3 id="进程-线程-协程"><a href="#进程-线程-协程" class="headerlink" title="进程/线程/协程"></a>进程/线程/协程</h3><ul>
+<li><strong>进程</strong>：进程是系统资源分配的最小单位，系统是由一个个进程（程序）组成的</li>
+<li><strong>线程</strong>：线程属于进程，共享进程的内存地址空间。线程是CPU调度的最小单位</li>
+<li><strong>协程</strong>：协程是属于线程的，协程没有线程的上下文切换消耗。协程的调度切换是用户（程序员）手动切换的</li>
+</ul>
+]]></content>
+      <categories>
+        <category>面经</category>
+      </categories>
+  </entry>
+  <entry>
     <title>KMP</title>
     <url>/2020/02/25/KMP/</url>
     <content><![CDATA[<a id="more"></a>
