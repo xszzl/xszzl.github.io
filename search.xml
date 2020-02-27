@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>KMP</title>
+    <url>/2020/02/27/KMP/</url>
+    <content><![CDATA[<h3 id="KMP"><a href="#KMP" class="headerlink" title="KMP"></a>KMP</h3><p>对于一个字符串ABCDABE，如果我们已经匹配到了E才发生不匹配，此时我们不用从头开始匹配，可以直接从C开始匹配，因为E之前的字符串的前缀和后缀有AB是相同的。</p>
+<p>直接上代码</p>
+<p>next数组就是前后缀最大长度，比如ABAA</p>
+<p>A [0]</p>
+<p>AB 前缀为[A]，后缀为[B]， [0]</p>
+<p>ABA 前缀为[A, AB] 后缀为[A, BA] [1]</p>
+<p>ABAA 前缀为[A, AB, ABA] 后缀为[A, AA, BAA] [1]</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">makeNext</span><span class="params">(<span class="keyword">char</span>[] P,<span class="keyword">int</span>[] next)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i,k;	<span class="comment">// i为下标，k为最大前后缀长度</span></span><br><span class="line">    <span class="keyword">int</span> m = P.length;</span><br><span class="line">    <span class="comment">// 第一个字符的前缀和后缀相同的长度为0</span></span><br><span class="line">    next[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">1</span>, k = <span class="number">0</span>; i &lt; m; i++)&#123;</span><br><span class="line">        <span class="comment">// 精髓所在</span></span><br><span class="line">        <span class="keyword">while</span>(k &gt; <span class="number">0</span> &amp;&amp; P[i] != p[k])</span><br><span class="line">            k = next[k-<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">if</span>(P[i] == P[k])&#123;</span><br><span class="line">            k++;</span><br><span class="line">        &#125;</span><br><span class="line">        next[i] = k;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个while循环的条件是i和k失配了，那么我们就要换一个k来和i配对，那么换多少呢，就是根据next[k-1]，因为next[k-1]代表的就是以k-1结尾的串的前后缀长度。如下图所示</p>
+<p><img src="/images/KMP%E5%9B%BE%E4%B8%80.png" alt="KMP图一"></p>
+<p><img src="/images/KMP%E5%9B%BE%E4%BA%8C.png" alt="KMP图二"></p>
+<p>举个例子就是</p>
+<p>ABCABDAB<strong>C</strong></p>
+<p>​       ABCAB<strong>D</strong>ABC</p>
+<p>​               AB<strong>C</strong>ABDABC</p>
+<p>KMP模板</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">kmp</span><span class="params">(<span class="keyword">char</span>[] T,<span class="keyword">char</span>[] P,<span class="keyword">int</span>[] next)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = T.length, m = P.length;</span><br><span class="line">    <span class="keyword">int</span> i,q;	<span class="comment">// q表示P的指针</span></span><br><span class="line">    makeNext(P, next);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>, q = <span class="number">0</span>; i &lt; n; i++)&#123;</span><br><span class="line">        <span class="keyword">while</span>(q &gt; <span class="number">0</span> &amp;&amp; P[q] != T[i])</span><br><span class="line">            q = next[q-<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">if</span>(P[q] == T[i])</span><br><span class="line">            q++;</span><br><span class="line">        <span class="keyword">if</span>(q == m)</span><br><span class="line">            <span class="keyword">return</span> i - m + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
+  <entry>
     <title>Java代理</title>
     <url>/2020/02/26/Java%E4%BB%A3%E7%90%86/</url>
     <content><![CDATA[<h3 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h3><a id="more"></a>
@@ -46,34 +70,6 @@
 ]]></content>
       <categories>
         <category>面经</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>KMP</title>
-    <url>/2020/02/25/KMP/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<h3 id="KMP"><a href="#KMP" class="headerlink" title="KMP"></a>KMP</h3><p>对于一个字符串ABCDABE，如果我们已经匹配到了E才发生不匹配，此时我们不用从头开始匹配，可以直接从C开始匹配，因为E之前的字符串的前缀和后缀有AB是相同的。</p>
-<p>直接上代码</p>
-<p>next数组就是前后缀最大长度，比如ABAA</p>
-<p>A [0]</p>
-<p>AB 前缀为[A]，后缀为[B]， [0]</p>
-<p>ABA 前缀为[A, AB] 后缀为[A, BA] [1]</p>
-<p>ABAA 前缀为[A, AB, ABA] 后缀为[A, AA, BAA] [1]</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">makeNext</span><span class="params">(<span class="keyword">char</span>[] P,<span class="keyword">int</span>[] next)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i,k;	<span class="comment">// i为下标，k为最大前后缀长度</span></span><br><span class="line">    <span class="keyword">int</span> m = P.length;</span><br><span class="line">    <span class="comment">// 第一个字符的前缀和后缀相同的长度为0</span></span><br><span class="line">    next[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">1</span>, k = <span class="number">0</span>; i &lt; m; i++)&#123;</span><br><span class="line">        <span class="comment">// 精髓所在</span></span><br><span class="line">        <span class="keyword">while</span>(k &gt; <span class="number">0</span> &amp;&amp; P[i] != p[k])</span><br><span class="line">            k = next[k-<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">if</span>(P[i] == P[k])&#123;</span><br><span class="line">            k++;</span><br><span class="line">        &#125;</span><br><span class="line">        next[i] = k;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这个while循环的条件是i和k失配了，那么我们就要换一个k来和i配对，那么换多少呢，就是根据next[k-1]，因为next[k-1]代表的就是以k-1结尾的串的前后缀长度。如下图所示</p>
-<p><img src="https://images0.cnblogs.com/blog/432480/201307/30163843-2fd01a5b306b4fbb8183b0a7c145d79c.png" alt="img">)<img src="https://images0.cnblogs.com/blog/432480/201307/30171002-e67282f4d1d84cb59e0152826b58e6ac.png" alt="img"></p>
-<p>举个例子就是</p>
-<p>ABCABDAB<strong>C</strong></p>
-<p>​       ABCAB<strong>D</strong>ABC</p>
-<p>​               AB<strong>C</strong>ABDABC</p>
-<p>KMP模板</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">kmp</span><span class="params">(<span class="keyword">char</span>[] T,<span class="keyword">char</span>[] P,<span class="keyword">int</span>[] next)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = T.length, m = P.length;</span><br><span class="line">    <span class="keyword">int</span> i,q;	<span class="comment">// q表示P的指针</span></span><br><span class="line">    makeNext(P, next);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>, q = <span class="number">0</span>; i &lt; n; i++)&#123;</span><br><span class="line">        <span class="keyword">while</span>(q &gt; <span class="number">0</span> &amp;&amp; P[q] != T[i])</span><br><span class="line">            q = next[q-<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">if</span>(P[q] == T[i])</span><br><span class="line">            q++;</span><br><span class="line">        <span class="keyword">if</span>(q == m)</span><br><span class="line">            <span class="keyword">return</span> i - m + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>算法和数据结构</category>
       </categories>
   </entry>
   <entry>
