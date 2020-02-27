@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-02-27T13:48:39.662Z</updated>
+  <updated>2020-02-27T14:39:08.704Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,11 +17,30 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>AQS</title>
+    <title>Java代理</title>
+    <link href="http://yoursite.com/2020/02/26/Java%E4%BB%A3%E7%90%86/"/>
+    <id>http://yoursite.com/2020/02/26/Java%E4%BB%A3%E7%90%86/</id>
+    <published>2020-02-26T06:48:21.000Z</published>
+    <updated>2020-02-27T14:39:08.704Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;代理&quot;&gt;&lt;a href=&quot;#代理&quot; class=&quot;headerlink&quot; title=&quot;代理&quot;&gt;&lt;/a&gt;代理&lt;/h3&gt;
+    
+    </summary>
+    
+    
+      <category term="Java基础" scheme="http://yoursite.com/categories/Java%E5%9F%BA%E7%A1%80/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>KMP</title>
     <link href="http://yoursite.com/2020/02/25/KMP/"/>
     <id>http://yoursite.com/2020/02/25/KMP/</id>
     <published>2020-02-25T06:48:21.000Z</published>
-    <updated>2020-02-27T13:48:39.662Z</updated>
+    <updated>2020-02-27T14:39:15.272Z</updated>
     
     <summary type="html">
     
@@ -469,29 +488,6 @@
       <category term="Spring" scheme="http://yoursite.com/tags/Spring/"/>
     
       <category term="Java框架" scheme="http://yoursite.com/tags/Java%E6%A1%86%E6%9E%B6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>自定义RPC</title>
-    <link href="http://yoursite.com/2020/02/06/%E8%87%AA%E5%AE%9A%E4%B9%89RPC/"/>
-    <id>http://yoursite.com/2020/02/06/%E8%87%AA%E5%AE%9A%E4%B9%89RPC/</id>
-    <published>2020-02-06T13:11:20.000Z</published>
-    <updated>2020-02-09T12:32:00.842Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;自定义RPC&quot;&gt;&lt;a href=&quot;#自定义RPC&quot; class=&quot;headerlink&quot; title=&quot;自定义RPC&quot;&gt;&lt;/a&gt;自定义RPC&lt;/h2&gt;&lt;h3 id=&quot;RPC结构&quot;&gt;&lt;a href=&quot;#RPC结构&quot; class=&quot;headerlink&quot; title=&quot;RPC结构&quot;&gt;&lt;/a&gt;RPC结构&lt;/h3&gt;
-    
-    </summary>
-    
-    
-      <category term="Java基础" scheme="http://yoursite.com/categories/Java%E5%9F%BA%E7%A1%80/"/>
-    
-    
-      <category term="Netty" scheme="http://yoursite.com/tags/Netty/"/>
-    
-      <category term="RPC" scheme="http://yoursite.com/tags/RPC/"/>
     
   </entry>
   
