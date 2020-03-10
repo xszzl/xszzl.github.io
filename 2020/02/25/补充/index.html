@@ -81,14 +81,14 @@
 
 
 
-<meta name="description" content="Java多线程问题16 Java如何实现多线程 继承Thread类，重写run函数 实现Runnable接口 实现Callable接口  实现Runnable接口可以避免Java单继承特性带来的局限，同时代码可以被多个线程共享，代码和数据是独立的；适合多个相同程序代码的线程区处理同一资源。 继承Thread类和实现Runnable方法启动线程都是使用start方法，然后JVM虚拟机将此线程放到就绪">
+<meta name="description" content="Java多线程问题1 Java如何实现多线程 继承Thread类，重写run函数 实现Runnable接口 实现Callable接口  实现Runnable接口可以避免Java单继承特性带来的局限，同时代码可以被多个线程共享，代码和数据是独立的；适合多个相同程序代码的线程区处理同一资源。 继承Thread类和实现Runnable方法启动线程都是使用start方法，然后JVM虚拟机将此线程放到就绪队">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java面经整理之四">
 <meta property="og:url" content="http://yoursite.com/2020/02/25/%E8%A1%A5%E5%85%85/index.html">
 <meta property="og:site_name" content="XiaoShanUzi">
-<meta property="og:description" content="Java多线程问题16 Java如何实现多线程 继承Thread类，重写run函数 实现Runnable接口 实现Callable接口  实现Runnable接口可以避免Java单继承特性带来的局限，同时代码可以被多个线程共享，代码和数据是独立的；适合多个相同程序代码的线程区处理同一资源。 继承Thread类和实现Runnable方法启动线程都是使用start方法，然后JVM虚拟机将此线程放到就绪">
+<meta property="og:description" content="Java多线程问题1 Java如何实现多线程 继承Thread类，重写run函数 实现Runnable接口 实现Callable接口  实现Runnable接口可以避免Java单继承特性带来的局限，同时代码可以被多个线程共享，代码和数据是独立的；适合多个相同程序代码的线程区处理同一资源。 继承Thread类和实现Runnable方法启动线程都是使用start方法，然后JVM虚拟机将此线程放到就绪队">
 <meta property="article:published_time" content="2020-02-25T06:48:21.000Z">
-<meta property="article:modified_time" content="2020-03-10T10:48:09.069Z">
+<meta property="article:modified_time" content="2020-03-10T11:07:35.648Z">
 <meta property="article:author" content="XiaoShanUzi">
 <meta name="twitter:card" content="summary">
 
@@ -403,7 +403,7 @@
       
 
       
-        <h2 id="Java多线程"><a href="#Java多线程" class="headerlink" title="Java多线程"></a>Java多线程</h2><h3 id="问题16-Java如何实现多线程"><a href="#问题16-Java如何实现多线程" class="headerlink" title="问题16 Java如何实现多线程"></a>问题16 Java如何实现多线程</h3><ul>
+        <h2 id="Java多线程"><a href="#Java多线程" class="headerlink" title="Java多线程"></a>Java多线程</h2><h3 id="问题1-Java如何实现多线程"><a href="#问题1-Java如何实现多线程" class="headerlink" title="问题1 Java如何实现多线程"></a>问题1 Java如何实现多线程</h3><ul>
 <li>继承Thread类，重写run函数</li>
 <li>实现Runnable接口</li>
 <li>实现Callable接口</li>
@@ -411,15 +411,15 @@
 <p>实现Runnable接口可以避免Java单继承特性带来的局限，同时代码可以被多个线程共享，代码和数据是独立的；适合多个相同程序代码的线程区处理同一资源。</p>
 <p>继承Thread类和实现Runnable方法启动线程都是使用start方法，然后JVM虚拟机将此线程放到就绪队列中。</p>
 <p>实现Callable接口要实现call方法，并且线程执行完毕后会有返回值。</p>
-<h3 id="问题17-如何保证线程安全"><a href="#问题17-如何保证线程安全" class="headerlink" title="问题17 如何保证线程安全"></a>问题17 如何保证线程安全</h3><ul>
+<h3 id="问题2-如何保证线程安全"><a href="#问题2-如何保证线程安全" class="headerlink" title="问题2 如何保证线程安全"></a>问题2 如何保证线程安全</h3><ul>
 <li>对变量使用volatile</li>
 <li>对程序段进行加锁（synchronzied、lock）</li>
 </ul>
-<h3 id="问题18-多进程如何进行信息交互"><a href="#问题18-多进程如何进行信息交互" class="headerlink" title="问题18 多进程如何进行信息交互"></a>问题18 多进程如何进行信息交互</h3><p>Object中的方法，wait()/notify()/notifyAll()</p>
-<h3 id="问题19-介绍下ThreadLocal"><a href="#问题19-介绍下ThreadLocal" class="headerlink" title="问题19 介绍下ThreadLocal"></a>问题19 介绍下ThreadLocal</h3><p>每个Thread都会有一个threadlocals变量，而threadlocals变量内部有一个ThreadLocalMap，该map的有多个Entry，每个Entry的key就是ThreadLocal变量，而value就是线程特有对象。</p>
+<h3 id="问题3-多进程如何进行信息交互"><a href="#问题3-多进程如何进行信息交互" class="headerlink" title="问题3 多进程如何进行信息交互"></a>问题3 多进程如何进行信息交互</h3><p>Object中的方法，wait()/notify()/notifyAll()</p>
+<h3 id="问题4-介绍下ThreadLocal"><a href="#问题4-介绍下ThreadLocal" class="headerlink" title="问题4 介绍下ThreadLocal"></a>问题4 介绍下ThreadLocal</h3><p>每个Thread都会有一个threadlocals变量，而threadlocals变量内部有一个ThreadLocalMap，该map的有多个Entry，每个Entry的key就是ThreadLocal变量，而value就是线程特有对象。</p>
 <p>由于对key，即ThreadLocal对象是弱引用，而对线程特有对象是强引用，因此如果是线程池，比如SpringBoot时，Thread结束后没有被回收，此时Thread有个强引用指向ThreadLocalMap，ThreadLocalMap也有强引用指向value，这样就会导致value一直无法被回收。如果不是线程池，那就会在key为null之后到线程被销毁这段时间value造成伪内存泄漏</p>
 <p>Java为了避免内存泄漏会在ThreadLocal的get，set方法时清理线程Map中key为null的value，但是如果是线程池之后没有使用ThreadLocal就无法清理了，因此我们在用完之后一定要使用remove方法手动清理</p>
-<h3 id="问题20-什么是线程池"><a href="#问题20-什么是线程池" class="headerlink" title="问题20 什么是线程池"></a>问题20 什么是线程池</h3><p>线程池就是事先创建若干个可执行的线程放一个容器中，需要的时候从池中获取线程不用自动创建，使用完毕不用销毁放回池中即可。</p>
+<h3 id="问题5-什么是线程池"><a href="#问题5-什么是线程池" class="headerlink" title="问题5 什么是线程池"></a>问题5 什么是线程池</h3><p>线程池就是事先创建若干个可执行的线程放一个容器中，需要的时候从池中获取线程不用自动创建，使用完毕不用销毁放回池中即可。</p>
 <p>一个线程池包括以下四个基本部分</p>
 <ul>
 <li>线程管理器，用于创建并管理线程池</li>
@@ -427,33 +427,33 @@
 <li>任务接口</li>
 <li>任务队列</li>
 </ul>
-<h3 id="问题21-看过Java线程池源码吗"><a href="#问题21-看过Java线程池源码吗" class="headerlink" title="问题21 看过Java线程池源码吗"></a>问题21 看过Java线程池源码吗</h3><p>看过Executors的源码，其核心部分包括execute方法、addWorker方法、Worker类、runWorker方法和getTask方法</p>
+<h3 id="问题6-看过Java线程池源码吗"><a href="#问题6-看过Java线程池源码吗" class="headerlink" title="问题6 看过Java线程池源码吗"></a>问题6 看过Java线程池源码吗</h3><p>看过Executors的源码，其核心部分包括execute方法、addWorker方法、Worker类、runWorker方法和getTask方法</p>
 <p>execute方法具体过程是如果当前活动线程数少于核心线程数，那么就会创建一个新的线程到线程池中，并把任务交给该线程；如果当前线程大于等于核心线程数，那么会放入缓存队列中等待，如果缓存满了，那么会创建一个新的线程放入线程池，并把任务添加到该线程中，如果活动线程数大于最大线程数那么就会拒绝。</p>
 <p>addWorker方法具体过程是首先判断是否需要创建线程，不需要直接返回false，如果需要就新建一个Worker类，然后用该Worker对象的Thread对象来启动任务</p>
 <p>Worker类有state、firstTask和thread三个成员变量，其中firstTask用于标记第一个任务</p>
 <p>runWorker方法传入Worker对象，然后根据firstTask是否为null来判断是否要从队列中取。最后执行任务</p>
 <p>getTask方法首先判断是否要进行超时控制，如果发生超时就从线程池里销毁这个线程，具体是通过返回null，然后GC；如果没有超时就从队列中取一个任务出来返回</p>
 <p>具体代码可以查看<a href="https://xszzl.github.io/2020/02/20/Java线程池源码/" target="_blank" rel="noopener">https://xszzl.github.io/2020/02/20/Java%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%BA%90%E7%A0%81/</a></p>
-<h3 id="问题23-volatile关键字的作用"><a href="#问题23-volatile关键字的作用" class="headerlink" title="问题23 volatile关键字的作用"></a>问题23 volatile关键字的作用</h3><ul>
+<h3 id="问题7-volatile关键字的作用"><a href="#问题7-volatile关键字的作用" class="headerlink" title="问题7 volatile关键字的作用"></a>问题7 volatile关键字的作用</h3><ul>
 <li>保证内存的可见性</li>
 <li>防止指令重排序，保证有序性</li>
 <li>仅能保证long/double类型变量的原子性</li>
 </ul>
-<h3 id="问题24-volatile如何保证可见性和有序性"><a href="#问题24-volatile如何保证可见性和有序性" class="headerlink" title="问题24 volatile如何保证可见性和有序性"></a>问题24 volatile如何保证可见性和有序性</h3><ul>
+<h3 id="问题8-volatile如何保证可见性和有序性"><a href="#问题8-volatile如何保证可见性和有序性" class="headerlink" title="问题8 volatile如何保证可见性和有序性"></a>问题8 volatile如何保证可见性和有序性</h3><ul>
 <li><strong>有序性</strong>：Java虚拟机在volatile变量写操作之前插入的释放屏障使得该屏障之前的任何读写操作都会在写操作之前被提交；volatile读操作之后插入获取屏障，使得volatile读操作的提交先于之后的任何读写操作</li>
 <li><strong>可见性</strong>：volatile保证可见性的原理是每次访问变量时都会进行一次刷新，访问主内存中的最新值。其底层原理是对于写操作，会在之后插入一个存储屏障，其作用是清空其处理器的写缓冲器，使得写缓冲器的内存更新到高速缓存中；对于读操作，会在其之前插入一个加载屏障，其作用是清空无效化队列，使得读操作能读取到其他处理器的共享变量所作的更新。高速缓存到主内存时MESI协议，当缓存条目为I，即无效时才会访问主内存</li>
 </ul>
-<h3 id="问题25-volatile在什么情况下可以代替锁"><a href="#问题25-volatile在什么情况下可以代替锁" class="headerlink" title="问题25 volatile在什么情况下可以代替锁"></a>问题25 volatile在什么情况下可以代替锁</h3><p>在多个线程共享一组状态变量时，可以将一组状态变量合并成一个对象，用一个volatile变量来引用该对象。</p>
-<h3 id="问题26-sleep和wait的区别"><a href="#问题26-sleep和wait的区别" class="headerlink" title="问题26 sleep和wait的区别"></a>问题26 sleep和wait的区别</h3><ul>
+<h3 id="问题9-volatile在什么情况下可以代替锁"><a href="#问题9-volatile在什么情况下可以代替锁" class="headerlink" title="问题9 volatile在什么情况下可以代替锁"></a>问题9 volatile在什么情况下可以代替锁</h3><p>在多个线程共享一组状态变量时，可以将一组状态变量合并成一个对象，用一个volatile变量来引用该对象。</p>
+<h3 id="问题10-sleep和wait的区别"><a href="#问题10-sleep和wait的区别" class="headerlink" title="问题10 sleep和wait的区别"></a>问题10 sleep和wait的区别</h3><ul>
 <li>sleep是Thread类的方法，而wait是Object类的方法</li>
 <li>sleep方法的作用是当前线程让出CPU资源，但是对象的锁依旧保持；而wait方法会让当前线程放弃对象的锁，进入对象的等待池，当调用对象的notify方法时该线程才有机会进入等锁池，如果获得锁就可以进入就绪状态了</li>
 </ul>
-<h3 id="问题27-synchronized和lock的区别"><a href="#问题27-synchronized和lock的区别" class="headerlink" title="问题27 synchronized和lock的区别"></a>问题27 synchronized和lock的区别</h3><ul>
+<h3 id="问题11-synchronized和lock的区别"><a href="#问题11-synchronized和lock的区别" class="headerlink" title="问题11 synchronized和lock的区别"></a>问题11 synchronized和lock的区别</h3><ul>
 <li>synchronized是隐式锁，而lock是显示锁</li>
 <li>在性能方面，在JDK1.6之前synchronized是重量级锁，性能不如lock，但是在JDK1.6之后对synchronized有了很多优化，导致synchronized的性能不比lock差</li>
 <li>synchronized使用的是CPU悲观锁机制，即独占锁，其他线程会被阻塞，而lock用的是乐观锁，即CAS操作</li>
 </ul>
-<h3 id="问题28-synchronized的底层实现"><a href="#问题28-synchronized的底层实现" class="headerlink" title="问题28 synchronized的底层实现"></a>问题28 synchronized的底层实现</h3><p>每个对象都有对象头，对象头里有一个Mark Word，存放了对象的hashCode、分代年龄、锁类型、锁标志位等信息。同时每个对象都自带了一把看不见的锁，monitor。</p>
+<h3 id="问题12-synchronized的底层实现"><a href="#问题12-synchronized的底层实现" class="headerlink" title="问题12 synchronized的底层实现"></a>问题12 synchronized的底层实现</h3><p>每个对象都有对象头，对象头里有一个Mark Word，存放了对象的hashCode、分代年龄、锁类型、锁标志位等信息。同时每个对象都自带了一把看不见的锁，monitor。</p>
 <p>查看源码，发现有_owner字段，即持有monitor对象的线程，_EntryList字段表示对象的等待池，_WaitSet字段表示对象的等锁池</p>
 <p>通过反编译我们可以看到，如果是同步代码块，其字节码如下</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">monitorenter</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">monitorexit</span><br><span class="line"></span><br><span class="line">monitorexit		<span class="comment">// 用于方法块发生异常时也能释放锁</span></span><br></pre></td></tr></table></figure>
@@ -461,50 +461,50 @@
 <p>如果是同步方法，其字节码如下</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flags:... , ACC_SYNCHRONIZED	<span class="comment">// 执行线程会持有monitor</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="问题29-synchronized关键字的优化"><a href="#问题29-synchronized关键字的优化" class="headerlink" title="问题29 synchronized关键字的优化"></a>问题29 synchronized关键字的优化</h3><ul>
+<h3 id="问题13-synchronized关键字的优化"><a href="#问题13-synchronized关键字的优化" class="headerlink" title="问题13 synchronized关键字的优化"></a>问题13 synchronized关键字的优化</h3><ul>
 <li><strong>自旋锁</strong>：共享数据的锁定状态持续时间很短，不用切换线程，让当前线程忙等即可</li>
 <li><strong>自适应自旋锁</strong>：自旋次数动态决定</li>
 <li><strong>锁消除</strong>：去除不可能存在的竞争，比如局部变量StringBuffer的append方法</li>
 <li><strong>锁粗化</strong>：加大加锁范围，避免反复加锁和解锁，比如循环中调用StringBuffer的append方法</li>
 </ul>
-<h3 id="问题30-synchronized锁的膨胀过程"><a href="#问题30-synchronized锁的膨胀过程" class="headerlink" title="问题30 synchronized锁的膨胀过程"></a>问题30 synchronized锁的膨胀过程</h3><p>无锁 -&gt; 偏向锁 -&gt; 轻量级锁 -&gt; 重量级锁</p>
+<h3 id="问题14-synchronized锁的膨胀过程"><a href="#问题14-synchronized锁的膨胀过程" class="headerlink" title="问题14 synchronized锁的膨胀过程"></a>问题14 synchronized锁的膨胀过程</h3><p>无锁 -&gt; 偏向锁 -&gt; 轻量级锁 -&gt; 重量级锁</p>
 <p>偏向锁即第一个线程获得锁，轻量级锁即出现第二个线程竞争锁，如果出现多个线程竞争锁就会变成重量级锁。其中偏向锁没有额外的性能消耗，轻量级锁则需要自旋，而重量级锁就会发生阻塞</p>
-<h3 id="问题31-如何停止一个线程"><a href="#问题31-如何停止一个线程" class="headerlink" title="问题31 如何停止一个线程"></a>问题31 如何停止一个线程</h3><ul>
+<h3 id="问题15-如何停止一个线程"><a href="#问题15-如何停止一个线程" class="headerlink" title="问题15 如何停止一个线程"></a>问题15 如何停止一个线程</h3><ul>
 <li>使用volatile变量终止正常运行的线程 + 抛异常法/return法</li>
 <li>组合使用interrupt方法与interrupted/isinterrupted方法终止正在运行的线程 + 抛异常/return法</li>
 <li>使用interrupt方法终止正在阻塞的线程</li>
 </ul>
-<h3 id="问题32-为什么线程通信方式wait-notify被定义在Object类中"><a href="#问题32-为什么线程通信方式wait-notify被定义在Object类中" class="headerlink" title="问题32 为什么线程通信方式wait/notify被定义在Object类中"></a>问题32 为什么线程通信方式wait/notify被定义在Object类中</h3><p>因为wait-nofity常常使用在获取对象锁的前提下不同线程的通信机制。在Java中，任意对象都可以当作锁来使用，所以会被定义在Object类中</p>
-<h3 id="问题33-如何确保线程安全"><a href="#问题33-如何确保线程安全" class="headerlink" title="问题33 如何确保线程安全"></a>问题33 如何确保线程安全</h3><ul>
+<h3 id="问题16-为什么线程通信方式wait-notify被定义在Object类中"><a href="#问题16-为什么线程通信方式wait-notify被定义在Object类中" class="headerlink" title="问题16 为什么线程通信方式wait/notify被定义在Object类中"></a>问题16 为什么线程通信方式wait/notify被定义在Object类中</h3><p>因为wait-nofity常常使用在获取对象锁的前提下不同线程的通信机制。在Java中，任意对象都可以当作锁来使用，所以会被定义在Object类中</p>
+<h3 id="问题17-如何确保线程安全"><a href="#问题17-如何确保线程安全" class="headerlink" title="问题17 如何确保线程安全"></a>问题17 如何确保线程安全</h3><ul>
 <li>通过加锁（Lock/Synchronized）保证对临界资源的同步互斥访问</li>
 <li>使用volatile关键字，轻量级同步机制</li>
 <li>使用不变类和线程安全类</li>
 </ul>
-<h3 id="问题34-如何分析和避免死锁"><a href="#问题34-如何分析和避免死锁" class="headerlink" title="问题34 如何分析和避免死锁"></a>问题34 如何分析和避免死锁</h3><p>我们需要查看Java应用程序的线程转储，找出那些状态为BLOCKED的线程和他们等待的资源。</p>
+<h3 id="问题18-如何分析和避免死锁"><a href="#问题18-如何分析和避免死锁" class="headerlink" title="问题18 如何分析和避免死锁"></a>问题18 如何分析和避免死锁</h3><p>我们需要查看Java应用程序的线程转储，找出那些状态为BLOCKED的线程和他们等待的资源。</p>
 <p>具体可以使用的工具包括JConsole、Jstack（主要用于线程Dump分析）以及VisualVM</p>
-<h3 id="问题35-什么是Java-Timer"><a href="#问题35-什么是Java-Timer" class="headerlink" title="问题35 什么是Java Timer"></a>问题35 什么是Java Timer</h3><p>Timer是一个调度器，可以用于安排一个任务在未来的某个特定时间执行或周期性执行</p>
+<h3 id="问题19-什么是Java-Timer"><a href="#问题19-什么是Java-Timer" class="headerlink" title="问题19 什么是Java Timer"></a>问题19 什么是Java Timer</h3><p>Timer是一个调度器，可以用于安排一个任务在未来的某个特定时间执行或周期性执行</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Timer timer = <span class="keyword">new</span> Timer();</span><br><span class="line">timer.schedule(<span class="keyword">new</span> TimerTask()&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"abc"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;, <span class="number">200000</span>, <span class="number">1000</span>);</span><br></pre></td></tr></table></figure>
 
-<h3 id="问题36-线程池的饱和策略"><a href="#问题36-线程池的饱和策略" class="headerlink" title="问题36 线程池的饱和策略"></a>问题36 线程池的饱和策略</h3><ul>
+<h3 id="问题20-线程池的饱和策略"><a href="#问题20-线程池的饱和策略" class="headerlink" title="问题20 线程池的饱和策略"></a>问题20 线程池的饱和策略</h3><ul>
 <li>AbortPolicy：直接抛出异常，默认策略</li>
 <li>CallerRunsPolicy：用调用者所在的线程来执行任务</li>
 <li>DiscardOldestPolicy：丢弃阻塞队列中最老的任务，并执行当前任务</li>
 <li>DiscardPolicy：直接丢弃任务</li>
 <li>实现RejectedExecutionHandler接口，自定义饱和策略</li>
 </ul>
-<h3 id="问题37-线程池调优"><a href="#问题37-线程池调优" class="headerlink" title="问题37 线程池调优"></a>问题37 线程池调优</h3><ul>
+<h3 id="问题21-线程池调优"><a href="#问题21-线程池调优" class="headerlink" title="问题21 线程池调优"></a>问题21 线程池调优</h3><ul>
 <li>设置最大线程数，防止线程资源耗尽</li>
 <li>使用有界队列，从而增加系统的稳定性和预警能力（饱和策略）</li>
 <li>根据任务的性质设置线程池大小：CPU密集型任务（CPU个数个线程），IO密集型任务（CPU个数两倍的线程），混合型任务（拆分）</li>
 </ul>
-<h3 id="问题38-CAS"><a href="#问题38-CAS" class="headerlink" title="问题38 CAS"></a>问题38 CAS</h3><p>CAS即比较并交换，有三个操作数，内存值V，旧的预期值A，新值B。当且仅当预期值A与内存值V相同时，将内存值V修改为B，否则什么也不做。</p>
+<h3 id="问题22-CAS"><a href="#问题22-CAS" class="headerlink" title="问题22 CAS"></a>问题22 CAS</h3><p>CAS即比较并交换，有三个操作数，内存值V，旧的预期值A，新值B。当且仅当预期值A与内存值V相同时，将内存值V修改为B，否则什么也不做。</p>
 <p>缺陷：</p>
 <ol>
 <li>ABA问题。解决思路是添加版本号，比如A-B-A变成1A-2B-3A就可以避免ABA问题</li>
 <li>不适用于竞争激烈的情形，否则会长时间自旋</li>
 <li>只能保证一个共享变量的原子操作，JDK1.5之后可以使用AtomicReference类来保证引用对象之间的原子性</li>
 </ol>
-<h3 id="问题39-Synchronized和Lock的区别"><a href="#问题39-Synchronized和Lock的区别" class="headerlink" title="问题39 Synchronized和Lock的区别"></a>问题39 Synchronized和Lock的区别</h3><ul>
+<h3 id="问题23-Synchronized和Lock的区别"><a href="#问题23-Synchronized和Lock的区别" class="headerlink" title="问题23 Synchronized和Lock的区别"></a>问题23 Synchronized和Lock的区别</h3><ul>
 <li>实现层面：synchronized是JVM层面，基于monitor，Lock是JDK层面，基于AQS</li>
 <li>响应中断：Lock可以让等待锁的线程响应中断，而synchronized则不能响应中断</li>
 <li>立即返回：Lock可以让线程在无法获取锁的时候立即返回，而synchronized无法办到</li>
@@ -512,21 +512,21 @@
 <li>可实现公平锁：Lock可以实现公平锁，而synchronized是非公平锁</li>
 <li>显示获取和释放：synchronized会自动释放锁，不会死锁，而lock需要手动释放，有可能发生死锁现象</li>
 </ul>
-<h3 id="问题40-同步容器（强一致性）"><a href="#问题40-同步容器（强一致性）" class="headerlink" title="问题40 同步容器（强一致性）"></a>问题40 同步容器（强一致性）</h3><p>Vector、Stack、HashTable以及Collections类中提供的静态工厂方法创建的类</p>
-<h3 id="问题41-CopyOnWrite容器（弱一致性）"><a href="#问题41-CopyOnWrite容器（弱一致性）" class="headerlink" title="问题41 CopyOnWrite容器（弱一致性）"></a>问题41 CopyOnWrite容器（弱一致性）</h3><p>CopyOnWrite容器即写时复制的容器，适用于读操作远多于修改操作的并发场景中。往容器中添加元素时不会直接添加，而是创建一个新的容器Copy原容器然后再添加。好处是可以实现并发读，不用加锁，坏处是复制需要开销。</p>
+<h3 id="问题24-同步容器（强一致性）"><a href="#问题24-同步容器（强一致性）" class="headerlink" title="问题24 同步容器（强一致性）"></a>问题24 同步容器（强一致性）</h3><p>Vector、Stack、HashTable以及Collections类中提供的静态工厂方法创建的类</p>
+<h3 id="问题25-CopyOnWrite容器（弱一致性）"><a href="#问题25-CopyOnWrite容器（弱一致性）" class="headerlink" title="问题25 CopyOnWrite容器（弱一致性）"></a>问题25 CopyOnWrite容器（弱一致性）</h3><p>CopyOnWrite容器即写时复制的容器，适用于读操作远多于修改操作的并发场景中。往容器中添加元素时不会直接添加，而是创建一个新的容器Copy原容器然后再添加。好处是可以实现并发读，不用加锁，坏处是复制需要开销。</p>
 <p>包括CopyOnWriteArrayList、CopyOnWriteArraySet，但是只能保证最终一致性，不能保证实时一致性（弱一致性）</p>
 <p>CopyOnWrite容器的写操作使用lock锁实现</p>
-<h3 id="问题42-ConcurrentHashMap的弱一致性"><a href="#问题42-ConcurrentHashMap的弱一致性" class="headerlink" title="问题42 ConcurrentHashMap的弱一致性"></a>问题42 ConcurrentHashMap的弱一致性</h3><ul>
+<h3 id="问题26-ConcurrentHashMap的弱一致性"><a href="#问题26-ConcurrentHashMap的弱一致性" class="headerlink" title="问题26 ConcurrentHashMap的弱一致性"></a>问题26 ConcurrentHashMap的弱一致性</h3><ul>
 <li>get操作是弱一致性的，get操作只能看到已完成的put操作</li>
 <li>clear操作是弱一致性的，已清理的segment可能在函数返回之前又被加入了数据</li>
 <li>ConcurrentHashMap的迭代操作是弱一致性的，已遍历的数组内容发送变化迭代器不会抛出ConcurrentModificationException异常</li>
 </ul>
-<h3 id="问题43-主线程等待子线程运行完毕再运行的方法"><a href="#问题43-主线程等待子线程运行完毕再运行的方法" class="headerlink" title="问题43 主线程等待子线程运行完毕再运行的方法"></a>问题43 主线程等待子线程运行完毕再运行的方法</h3><ol>
+<h3 id="问题27-主线程等待子线程运行完毕再运行的方法"><a href="#问题27-主线程等待子线程运行完毕再运行的方法" class="headerlink" title="问题27 主线程等待子线程运行完毕再运行的方法"></a>问题27 主线程等待子线程运行完毕再运行的方法</h3><ol>
 <li>Join。join方法的实现原理是不停检查join线程是否存活，如果存活则让当前线程永远等待，直到join线程完成后，线程的this.notifyAll()方法会被调用</li>
 <li>CountDownLatch</li>
 <li>Sleep，不推荐</li>
 </ol>
-<h3 id="问题44-Java线程的状态"><a href="#问题44-Java线程的状态" class="headerlink" title="问题44 Java线程的状态"></a>问题44 Java线程的状态</h3><ul>
+<h3 id="问题28-Java线程的状态"><a href="#问题28-Java线程的状态" class="headerlink" title="问题28 Java线程的状态"></a>问题28 Java线程的状态</h3><ul>
 <li>新建New</li>
 <li>运行Runnable，包括Running和Ready</li>
 <li>无限期等待Waiting</li>
@@ -534,7 +534,7 @@
 <li>阻塞Blocked，等待获取一个排他锁</li>
 <li>结束Terminated</li>
 </ul>
-<h3 id="问题45-进程-线程-协程"><a href="#问题45-进程-线程-协程" class="headerlink" title="问题45 进程/线程/协程"></a>问题45 进程/线程/协程</h3><ul>
+<h3 id="问题29-进程-线程-协程"><a href="#问题29-进程-线程-协程" class="headerlink" title="问题29 进程/线程/协程"></a>问题29 进程/线程/协程</h3><ul>
 <li><strong>进程</strong>：进程是系统资源分配的最小单位，系统是由一个个进程（程序）组成的</li>
 <li><strong>线程</strong>：线程属于进程，共享进程的内存地址空间。线程是CPU调度的最小单位</li>
 <li><strong>协程</strong>：协程是属于线程的，协程没有线程的上下文切换消耗。协程的调度切换是用户（程序员）手动切换的</li>
@@ -737,7 +737,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java多线程"><span class="nav-number">1.</span> <span class="nav-text">Java多线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题16-Java如何实现多线程"><span class="nav-number">1.1.</span> <span class="nav-text">问题16 Java如何实现多线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题17-如何保证线程安全"><span class="nav-number">1.2.</span> <span class="nav-text">问题17 如何保证线程安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题18-多进程如何进行信息交互"><span class="nav-number">1.3.</span> <span class="nav-text">问题18 多进程如何进行信息交互</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题19-介绍下ThreadLocal"><span class="nav-number">1.4.</span> <span class="nav-text">问题19 介绍下ThreadLocal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题20-什么是线程池"><span class="nav-number">1.5.</span> <span class="nav-text">问题20 什么是线程池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题21-看过Java线程池源码吗"><span class="nav-number">1.6.</span> <span class="nav-text">问题21 看过Java线程池源码吗</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题23-volatile关键字的作用"><span class="nav-number">1.7.</span> <span class="nav-text">问题23 volatile关键字的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题24-volatile如何保证可见性和有序性"><span class="nav-number">1.8.</span> <span class="nav-text">问题24 volatile如何保证可见性和有序性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题25-volatile在什么情况下可以代替锁"><span class="nav-number">1.9.</span> <span class="nav-text">问题25 volatile在什么情况下可以代替锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题26-sleep和wait的区别"><span class="nav-number">1.10.</span> <span class="nav-text">问题26 sleep和wait的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题27-synchronized和lock的区别"><span class="nav-number">1.11.</span> <span class="nav-text">问题27 synchronized和lock的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题28-synchronized的底层实现"><span class="nav-number">1.12.</span> <span class="nav-text">问题28 synchronized的底层实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题29-synchronized关键字的优化"><span class="nav-number">1.13.</span> <span class="nav-text">问题29 synchronized关键字的优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题30-synchronized锁的膨胀过程"><span class="nav-number">1.14.</span> <span class="nav-text">问题30 synchronized锁的膨胀过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题31-如何停止一个线程"><span class="nav-number">1.15.</span> <span class="nav-text">问题31 如何停止一个线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题32-为什么线程通信方式wait-notify被定义在Object类中"><span class="nav-number">1.16.</span> <span class="nav-text">问题32 为什么线程通信方式wait&#x2F;notify被定义在Object类中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题33-如何确保线程安全"><span class="nav-number">1.17.</span> <span class="nav-text">问题33 如何确保线程安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题34-如何分析和避免死锁"><span class="nav-number">1.18.</span> <span class="nav-text">问题34 如何分析和避免死锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题35-什么是Java-Timer"><span class="nav-number">1.19.</span> <span class="nav-text">问题35 什么是Java Timer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题36-线程池的饱和策略"><span class="nav-number">1.20.</span> <span class="nav-text">问题36 线程池的饱和策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题37-线程池调优"><span class="nav-number">1.21.</span> <span class="nav-text">问题37 线程池调优</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题38-CAS"><span class="nav-number">1.22.</span> <span class="nav-text">问题38 CAS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题39-Synchronized和Lock的区别"><span class="nav-number">1.23.</span> <span class="nav-text">问题39 Synchronized和Lock的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题40-同步容器（强一致性）"><span class="nav-number">1.24.</span> <span class="nav-text">问题40 同步容器（强一致性）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题41-CopyOnWrite容器（弱一致性）"><span class="nav-number">1.25.</span> <span class="nav-text">问题41 CopyOnWrite容器（弱一致性）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题42-ConcurrentHashMap的弱一致性"><span class="nav-number">1.26.</span> <span class="nav-text">问题42 ConcurrentHashMap的弱一致性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题43-主线程等待子线程运行完毕再运行的方法"><span class="nav-number">1.27.</span> <span class="nav-text">问题43 主线程等待子线程运行完毕再运行的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题44-Java线程的状态"><span class="nav-number">1.28.</span> <span class="nav-text">问题44 Java线程的状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题45-进程-线程-协程"><span class="nav-number">1.29.</span> <span class="nav-text">问题45 进程&#x2F;线程&#x2F;协程</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java多线程"><span class="nav-number">1.</span> <span class="nav-text">Java多线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题1-Java如何实现多线程"><span class="nav-number">1.1.</span> <span class="nav-text">问题1 Java如何实现多线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题2-如何保证线程安全"><span class="nav-number">1.2.</span> <span class="nav-text">问题2 如何保证线程安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题3-多进程如何进行信息交互"><span class="nav-number">1.3.</span> <span class="nav-text">问题3 多进程如何进行信息交互</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题4-介绍下ThreadLocal"><span class="nav-number">1.4.</span> <span class="nav-text">问题4 介绍下ThreadLocal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题5-什么是线程池"><span class="nav-number">1.5.</span> <span class="nav-text">问题5 什么是线程池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题6-看过Java线程池源码吗"><span class="nav-number">1.6.</span> <span class="nav-text">问题6 看过Java线程池源码吗</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题7-volatile关键字的作用"><span class="nav-number">1.7.</span> <span class="nav-text">问题7 volatile关键字的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题8-volatile如何保证可见性和有序性"><span class="nav-number">1.8.</span> <span class="nav-text">问题8 volatile如何保证可见性和有序性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题9-volatile在什么情况下可以代替锁"><span class="nav-number">1.9.</span> <span class="nav-text">问题9 volatile在什么情况下可以代替锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题10-sleep和wait的区别"><span class="nav-number">1.10.</span> <span class="nav-text">问题10 sleep和wait的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题11-synchronized和lock的区别"><span class="nav-number">1.11.</span> <span class="nav-text">问题11 synchronized和lock的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题12-synchronized的底层实现"><span class="nav-number">1.12.</span> <span class="nav-text">问题12 synchronized的底层实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题13-synchronized关键字的优化"><span class="nav-number">1.13.</span> <span class="nav-text">问题13 synchronized关键字的优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题14-synchronized锁的膨胀过程"><span class="nav-number">1.14.</span> <span class="nav-text">问题14 synchronized锁的膨胀过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题15-如何停止一个线程"><span class="nav-number">1.15.</span> <span class="nav-text">问题15 如何停止一个线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题16-为什么线程通信方式wait-notify被定义在Object类中"><span class="nav-number">1.16.</span> <span class="nav-text">问题16 为什么线程通信方式wait&#x2F;notify被定义在Object类中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题17-如何确保线程安全"><span class="nav-number">1.17.</span> <span class="nav-text">问题17 如何确保线程安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题18-如何分析和避免死锁"><span class="nav-number">1.18.</span> <span class="nav-text">问题18 如何分析和避免死锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题19-什么是Java-Timer"><span class="nav-number">1.19.</span> <span class="nav-text">问题19 什么是Java Timer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题20-线程池的饱和策略"><span class="nav-number">1.20.</span> <span class="nav-text">问题20 线程池的饱和策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题21-线程池调优"><span class="nav-number">1.21.</span> <span class="nav-text">问题21 线程池调优</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题22-CAS"><span class="nav-number">1.22.</span> <span class="nav-text">问题22 CAS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题23-Synchronized和Lock的区别"><span class="nav-number">1.23.</span> <span class="nav-text">问题23 Synchronized和Lock的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题24-同步容器（强一致性）"><span class="nav-number">1.24.</span> <span class="nav-text">问题24 同步容器（强一致性）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题25-CopyOnWrite容器（弱一致性）"><span class="nav-number">1.25.</span> <span class="nav-text">问题25 CopyOnWrite容器（弱一致性）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题26-ConcurrentHashMap的弱一致性"><span class="nav-number">1.26.</span> <span class="nav-text">问题26 ConcurrentHashMap的弱一致性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题27-主线程等待子线程运行完毕再运行的方法"><span class="nav-number">1.27.</span> <span class="nav-text">问题27 主线程等待子线程运行完毕再运行的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题28-Java线程的状态"><span class="nav-number">1.28.</span> <span class="nav-text">问题28 Java线程的状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题29-进程-线程-协程"><span class="nav-number">1.29.</span> <span class="nav-text">问题29 进程&#x2F;线程&#x2F;协程</span></a></li></ol></li></ol></div>
             
 
           </div>
